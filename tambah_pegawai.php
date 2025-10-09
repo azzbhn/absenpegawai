@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tambah Pegawai - Absensi Kecamatan Ajibarang</title>
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -97,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <nav class="bg-[#1F9D55] text-white shadow-md">
         <div class="container mx-auto px-4">
             <div class="flex space-x-8">
-                <a href="dashboard.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                <a href="dashboard.php" class="py-3 px-2 border-b-2 border-white font-semibold flex items-center space-x-2">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
@@ -105,13 +106,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <i data-feather="clock"></i>
                     <span>Absensi</span>
                 </a>
+                <a href="ijin.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                    <i data-feather="calendar"></i>
+                    <span>Pengajuan Cuti</span>
+                </a>
+                <?php if ($user['jabatan'] == 'Administrator'): ?>
                 <a href="data_absensi.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
                     <i data-feather="file-text"></i>
                     <span>Data Absensi</span>
                 </a>
-                <a href="tambah_pegawai.php" class="py-3 px-2 border-b-2 border-white font-semibold flex items-center space-x-2">
-                    <i data-feather="user-plus"></i>
-                    <span>Tambah Pegawai</span>
+                <a href="persetujuan_cuti.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                    <i data-feather="check-square"></i>
+                    <span>Persetujuan Cuti</span>
+                </a>
+                <?php endif; ?>
+                <a href="ganti_password.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
+                    <i data-feather="key"></i>
+                    <span>Ganti Password</span>
                 </a>
                 <a href="logout.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
                     <i data-feather="log-out"></i>

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// SET TIMEZONE KE WIB (Asia/Jakarta) - PASTIKAN INI ADA
+// SET TIMEZONE KE WIB (Asia/Jakarta)
 date_default_timezone_set('Asia/Jakarta');
 
 $host = 'localhost';
@@ -38,5 +38,19 @@ function hitungJarak($lat1, $lng1, $lat2, $lng2) {
     $c = 2 * atan2(sqrt($a), sqrt(1-$a));
     
     return $earthRadius * $c;
+}
+
+// Fungsi untuk generate tanggal antara dua tanggal
+function generateDateRange($startDate, $endDate) {
+    $dates = [];
+    $current = strtotime($startDate);
+    $end = strtotime($endDate);
+    
+    while ($current <= $end) {
+        $dates[] = date('Y-m-d', $current);
+        $current = strtotime('+1 day', $current);
+    }
+    
+    return $dates;
 }
 ?>

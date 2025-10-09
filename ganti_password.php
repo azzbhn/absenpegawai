@@ -38,14 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ganti Password - Absensi Kecamatan Ajibarang</title>
+    <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header dan Navigation sama seperti halaman lain -->
+    <!-- Navigation -->
+    
     
     <main class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Ganti Password</h2>
+            <img src="assets/logo.png" alt="Logo Banyumas" class="w-1/4 mx-auto">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Ganti Password</h2>
             
             <?php if (isset($success)): ?>
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
@@ -82,6 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         class="w-full bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-3 px-4 rounded-lg transition duration-200">
                     Ganti Password
                 </button>
+                <a href="dashboard.php"
+                class="inline-block w-full text-center bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-3 px-4 rounded-lg transition duration-200">
+                Kembali
+                </a>
             </form>
         </div>
     </main>

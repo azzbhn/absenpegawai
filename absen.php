@@ -17,6 +17,19 @@ $radius = RADIUS_METER;
 $today = date('Y-m-d');
 $current_time = date('H:i:s');
 
+// CEK APAKAH USER SEDANG CUTI HARI INI
+$stmt_cuti = $pdo->prepare('
+    SELECT * FROM absensi 
+    WHERE id_pegawai = ? 
+    AND tanggal = ? 
+    AND status IN ("cuti tahunan", "cuti sakit")
+');
+$stmt_cuti->execute([$user['id_pegawai'], $today]);
+$cuti_hari_ini = $stmt_cuti->fetch(PDO::FETCH_ASSOC);
+
+$sedang_cuti = $cuti_hari_ini ? true : false;
+$jenis_cuti = $sedang_cuti ? $cuti_hari_ini['status'] : '';
+
 $stmt = $pdo->prepare('SELECT * FROM absensi WHERE id_pegawai = ? AND tanggal = ?');
 $stmt->execute([$user['id_pegawai'], $today]);
 $absensi_hari_ini = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -26,45 +39,50 @@ $sudah_absen_pulang = $absensi_hari_ini && $absensi_hari_ini['jam_keluar'] != nu
 
 // Proses absensi - GUNAKAN WAKTU SERVER
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $action = $_POST['action'];
-    $lat = $_POST['lat'];
-    $lng = $_POST['lng'];
+    // CEK APAKAH SEDANG CUTI - TAMBAHKAN VALIDASI INI
+    if ($sedang_cuti) {
+        $error = 'Anda sedang cuti ' . $jenis_cuti . ' hari ini. Tidak dapat melakukan absensi.';
+    } else {
+        $action = $_POST['action'];
+        $lat = $_POST['lat'];
+        $lng = $_POST['lng'];
 
-    // Validasi lokasi
-    $jarak = hitungJarak($lat, $lng, $kantor_lat, $kantor_lng);
-    
-    if ($jarak <= $radius) {
-        if ($action == 'masuk' && !$sudah_absen_masuk) {
-            // GUNAKAN WAKTU SERVER PHP
-            $waktu_sekarang = date('H:i:s');
-            $stmt = $pdo->prepare('INSERT INTO absensi (id_pegawai, tanggal, jam_masuk, lokasi_lat, lokasi_lng, status) VALUES (?, ?, ?, ?, ?, "hadir")');
-            $stmt->execute([$user['id_pegawai'], $today, $waktu_sekarang, $lat, $lng]);
-            
-            // Set session success dan redirect untuk menghindari resubmission
-            $_SESSION['success'] = 'Absen masuk berhasil pukul ' . $waktu_sekarang . '!';
-            header('Location: absen.php');
-            exit;
-            
-        } elseif ($action == 'pulang' && $sudah_absen_masuk && !$sudah_absen_pulang) {
-            // GUNAKAN WAKTU SERVER PHP
-            $waktu_sekarang = date('H:i:s');
-            $stmt = $pdo->prepare('UPDATE absensi SET jam_keluar = ? WHERE id_pegawai = ? AND tanggal = ?');
-            $stmt->execute([$waktu_sekarang, $user['id_pegawai'], $today]);
-            
-            // Set session success dan redirect untuk menghindari resubmission
-            $_SESSION['success'] = 'Absen pulang berhasil pukul ' . $waktu_sekarang . '!';
-            header('Location: absen.php');
-            exit;
-            
+        // Validasi lokasi
+        $jarak = hitungJarak($lat, $lng, $kantor_lat, $kantor_lng);
+        
+        if ($jarak <= $radius) {
+            if ($action == 'masuk' && !$sudah_absen_masuk) {
+                // GUNAKAN WAKTU SERVER PHP
+                $waktu_sekarang = date('H:i:s');
+                $stmt = $pdo->prepare('INSERT INTO absensi (id_pegawai, tanggal, jam_masuk, lokasi_lat, lokasi_lng, status) VALUES (?, ?, ?, ?, ?, "hadir")');
+                $stmt->execute([$user['id_pegawai'], $today, $waktu_sekarang, $lat, $lng]);
+                
+                // Set session success dan redirect untuk menghindari resubmission
+                $_SESSION['success'] = 'Absen masuk berhasil pukul ' . $waktu_sekarang . '!';
+                header('Location: absen.php');
+                exit;
+                
+            } elseif ($action == 'pulang' && $sudah_absen_masuk && !$sudah_absen_pulang) {
+                // GUNAKAN WAKTU SERVER PHP
+                $waktu_sekarang = date('H:i:s');
+                $stmt = $pdo->prepare('UPDATE absensi SET jam_keluar = ? WHERE id_pegawai = ? AND tanggal = ?');
+                $stmt->execute([$waktu_sekarang, $user['id_pegawai'], $today]);
+                
+                // Set session success dan redirect untuk menghindari resubmission
+                $_SESSION['success'] = 'Absen pulang berhasil pukul ' . $waktu_sekarang . '!';
+                header('Location: absen.php');
+                exit;
+                
+            } else {
+                $_SESSION['error'] = 'Anda sudah absen masuk/pulang hari ini.';
+                header('Location: absen.php');
+                exit;
+            }
         } else {
-            $_SESSION['error'] = 'Anda sudah absen masuk/pulang hari ini.';
+            $_SESSION['error'] = 'Anda berada di luar area kantor Kecamatan Ajibarang. Jarak: ' . round($jarak, 2) . ' meter.';
             header('Location: absen.php');
             exit;
         }
-    } else {
-        $_SESSION['error'] = 'Anda berada di luar area kantor Kecamatan Ajibarang. Jarak: ' . round($jarak, 2) . ' meter.';
-        header('Location: absen.php');
-        exit;
     }
 }
 
@@ -101,7 +119,6 @@ unset($_SESSION['error']);
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
     <header class="bg-[#F9B000] text-white shadow-lg">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
@@ -120,24 +137,35 @@ unset($_SESSION['error']);
         </div>
     </header>
 
-    <!-- Navigation -->
     <nav class="bg-[#1F9D55] text-white shadow-md">
         <div class="container mx-auto px-4">
             <div class="flex space-x-8">
-                <a href="dashboard.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                <a href="dashboard.php" class="py-3 px-2 border-b-2 border-white font-semibold flex items-center space-x-2">
                     <i data-feather="home"></i>
                     <span>Dashboard</span>
                 </a>
-                <a href="absen.php" class="py-3 px-2 border-b-2 border-white font-semibold flex items-center space-x-2">
+                <a href="absen.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
                     <i data-feather="clock"></i>
                     <span>Absensi</span>
+                </a>
+                <a href="ijin.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                    <i data-feather="calendar"></i>
+                    <span>Pengajuan Cuti</span>
                 </a>
                 <?php if ($user['jabatan'] == 'Administrator'): ?>
                 <a href="data_absensi.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
                     <i data-feather="file-text"></i>
                     <span>Data Absensi</span>
                 </a>
+                <a href="persetujuan_cuti.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
+                    <i data-feather="check-square"></i>
+                    <span>Persetujuan Cuti</span>
+                </a>
                 <?php endif; ?>
+                <a href="ganti_password.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
+                    <i data-feather="key"></i>
+                    <span>Ganti Password</span>
+                </a>
                 <a href="logout.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
                     <i data-feather="log-out"></i>
                     <span>Logout</span>
@@ -146,7 +174,6 @@ unset($_SESSION['error']);
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Absensi Pegawai</h2>
@@ -154,7 +181,6 @@ unset($_SESSION['error']);
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Form Absensi -->
             <div class="bg-white rounded-2xl shadow-lg p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Form Absensi</h3>
                 
@@ -168,6 +194,19 @@ unset($_SESSION['error']);
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
                         <?= $error ?>
                     </div>
+                <?php endif; ?>
+
+                <?php if ($sedang_cuti): ?>
+                <div class="bg-yellow-100 border border-yellow-400 text-yellow-800 px-4 py-3 rounded mb-6">
+                    <div class="flex items-center">
+                        <i data-feather="calendar" class="w-5 h-5 mr-2"></i>
+                        <div>
+                            <p class="font-semibold">Anda Sedang Cuti</p>
+                            <p class="text-sm">Status: <span class="font-bold"><?= ucfirst($jenis_cuti) ?></span></p>
+                            <p class="text-sm">Anda tidak dapat melakukan absensi selama periode cuti.</p>
+                        </div>
+                    </div>
+                </div>
                 <?php endif; ?>
 
                 <div class="space-y-4 mb-6">
@@ -186,17 +225,27 @@ unset($_SESSION['error']);
                     <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                         <span class="font-semibold">Status Absen Masuk:</span>
                         <span class="<?= $sudah_absen_masuk ? 'text-green-600' : 'text-red-600' ?> font-semibold">
-                            <?= $sudah_absen_masuk ? 'SUDAH' : 'BELUM' ?>
+                            <?= $sudah_absen_masuk ? 'SUDAH' : ($sedang_cuti ? 'CUTI' : 'BELUM') ?>
                         </span>
                     </div>
                     <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                         <span class="font-semibold">Status Absen Pulang:</span>
                         <span class="<?= $sudah_absen_pulang ? 'text-green-600' : 'text-red-600' ?> font-semibold">
-                            <?= $sudah_absen_pulang ? 'SUDAH' : 'BELUM' ?>
+                            <?= $sudah_absen_pulang ? 'SUDAH' : ($sedang_cuti ? 'CUTI' : 'BELUM') ?>
                         </span>
                     </div>
+                    
+                    <?php if ($sedang_cuti): ?>
+                    <div class="flex justify-between items-center p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                        <span class="font-semibold">Status Hari Ini:</span>
+                        <span class="text-yellow-700 font-semibold">
+                            <?= strtoupper($jenis_cuti) ?>
+                        </span>
+                    </div>
+                    <?php endif; ?>
                 </div>
 
+                <?php if (!$sedang_cuti): ?>
                 <form method="POST" id="form-absen">
                     <input type="hidden" name="lat" id="lat">
                     <input type="hidden" name="lng" id="lng">
@@ -219,6 +268,13 @@ unset($_SESSION['error']);
                         <?php endif; ?>
                     </div>
                 </form>
+                <?php else: ?>
+                <div class="bg-gray-100 border border-gray-300 rounded-lg p-6 text-center">
+                    <i data-feather="calendar" class="w-12 h-12 text-gray-400 mx-auto mb-3"></i>
+                    <p class="text-gray-600 font-semibold">Absensi Tidak Tersedia</p>
+                    <p class="text-gray-500 text-sm mt-1">Anda sedang cuti <?= $jenis_cuti ?> hari ini</p>
+                </div>
+                <?php endif; ?>
 
                 <div class="mt-6 p-4 bg-blue-50 rounded-lg">
                     <h4 class="font-semibold text-blue-800 mb-2">Informasi Lokasi:</h4>
@@ -227,7 +283,6 @@ unset($_SESSION['error']);
                 </div>
             </div>
 
-            <!-- Peta Lokasi -->
             <div class="bg-white rounded-2xl shadow-lg p-6">
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Peta Lokasi</h3>
                 <div id="map"></div>
@@ -235,6 +290,15 @@ unset($_SESSION['error']);
                     <p><span class="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span> Lokasi Kantor</p>
                     <p><span class="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span> Lokasi Anda</p>
                     <p class="mt-2">Pastikan Anda berada dalam radius 100 meter dari kantor untuk dapat melakukan absensi.</p>
+                    
+                    <?php if ($sedang_cuti): ?>
+                    <div class="mt-3 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                        <p class="text-yellow-700 text-sm">
+                            <i data-feather="info" class="w-4 h-4 inline mr-1"></i>
+                            <strong>Informasi:</strong> Anda sedang cuti <?= $jenis_cuti ?>. Absensi dinonaktifkan untuk hari ini.
+                        </p>
+                    </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -295,19 +359,25 @@ unset($_SESSION['error']);
 
         // Fungsi untuk mendapatkan lokasi pengguna
         function getLocation() {
-            if (navigator.geolocation) {
-                watchId = navigator.geolocation.watchPosition(
-                    showPosition,
-                    showError,
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 10000,
-                        maximumAge: 0
-                    }
-                );
-            } else {
-                document.getElementById('location-info').textContent = 'Geolocation tidak didukung oleh browser ini.';
-            }
+            <?php if (!$sedang_cuti): ?>
+                // HANYA AKTIFKAN GEOLOCATION JIKA TIDAK SEDANG CUTI
+                if (navigator.geolocation) {
+                    watchId = navigator.geolocation.watchPosition(
+                        showPosition,
+                        showError,
+                        {
+                            enableHighAccuracy: true,
+                            timeout: 10000,
+                            maximumAge: 0
+                        }
+                    );
+                } else {
+                    document.getElementById('location-info').textContent = 'Geolocation tidak didukung oleh browser ini.';
+                }
+            <?php else: ?>
+                document.getElementById('location-info').textContent = 'Geolocation dinonaktifkan - Anda sedang cuti';
+                document.getElementById('distance-info').textContent = 'Tidak perlu menghitung jarak - Anda sedang cuti';
+            <?php endif; ?>
         }
 
         function showPosition(position) {
@@ -326,12 +396,12 @@ unset($_SESSION['error']);
             // Hitung dan tampilkan jarak
             const distance = calculateDistance(lat, lng, <?= $kantor_lat ?>, <?= $kantor_lng ?>);
             const statusElement = document.getElementById('distance-info');
-            statusElement.textContent = `Jarak dari kantor: ${distance.toFixed(2)} meter`;
+            statusElement.innerHTML = `Jarak dari kantor: <strong>${distance.toFixed(2)} meter</strong>`;
             
             if (distance <= <?= $radius ?>) {
-                statusElement.className = 'text-green-700 text-sm font-semibold';
+                statusElement.className = 'text-green-700 text-sm';
             } else {
-                statusElement.className = 'text-red-700 text-sm font-semibold';
+                statusElement.className = 'text-red-700 text-sm';
             }
             
             // Update atau buat marker pengguna
@@ -368,18 +438,19 @@ unset($_SESSION['error']);
 
         // Fungsi untuk menghitung jarak
         function calculateDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371000;
+            const R = 6371000; // Radius Bumi dalam meter
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = 
                 Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * // <-- INI PERBAIKANNYA
                 Math.sin(dLon/2) * Math.sin(dLon/2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c;
+            return R * c; // Hasil dalam meter
         }
 
-        // Event listener untuk form submission
+        // Event listener untuk form submission - HANYA JIKA TIDAK CUTI
+        <?php if (!$sedang_cuti): ?>
         document.getElementById('form-absen').addEventListener('submit', function(e) {
             const lat = document.getElementById('lat').value;
             const lng = document.getElementById('lng').value;
@@ -417,6 +488,7 @@ unset($_SESSION['error']);
                 }
             });
         });
+        <?php endif; ?>
 
         // Initialize
         getLocation();
