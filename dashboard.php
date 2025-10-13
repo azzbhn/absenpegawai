@@ -114,43 +114,67 @@ if (!file_exists($fotoPath)) {
         </div>
     </header>
 
+    
     <!-- Navigation -->
     <nav class="bg-[#1F9D55] text-white shadow-md">
-        <div class="container mx-auto px-4">
-            <div class="flex space-x-8">
-                <a href="dashboard.php" class="py-3 px-2 border-b-2 border-white font-semibold flex items-center space-x-2">
-                    <i data-feather="home"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="absen.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
-                    <i data-feather="clock"></i>
-                    <span>Absensi</span>
-                </a>
-                <a href="ijin.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
-                    <i data-feather="calendar"></i>
-                    <span>Pengajuan Cuti</span>
-                </a>
-                <?php if ($user['jabatan'] == 'Administrator'): ?>
-                <a href="data_absensi.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
-                    <i data-feather="file-text"></i>
-                    <span>Data Absensi</span>
-                </a>
-                <a href="persetujuan_cuti.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2">
-                    <i data-feather="check-square"></i>
-                    <span>Persetujuan Cuti</span>
-                </a>
-                <?php endif; ?>
-                <a href="ganti_password.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
-                    <i data-feather="key"></i>
-                    <span>Ganti Password</span>
-                </a>
-                <a href="logout.php" class="py-3 px-2 hover:bg-[#188a4a] transition duration-200 flex items-center space-x-2 ml-auto">
-                    <i data-feather="log-out"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+          <!-- Logo / Brand -->
+          <!--<div class="text-lg font-semibold flex items-center space-x-2">-->
+          <!--  <i data-feather="home"></i>-->
+          <!--  <span>Dashboard</span>-->
+          <!--</div>-->
+    
+          <!-- Hamburger Menu (Mobile) -->
+          <button id="menu-toggle" class="md:hidden focus:outline-none">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+    
+          <!-- Menu Links -->
+          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0">
+            <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="home"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="absen.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="clock"></i>
+              <span>Absensi</span>
+            </a>
+            <a href="ijin.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="calendar"></i>
+              <span>Pengajuan Cuti</span>
+            </a>
+            <?php if ($user['jabatan'] == 'Administrator'): ?>
+            <a href="data_absensi.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="file-text"></i>
+              <span>Data Absensi</span>
+            </a>
+            <a href="persetujuan_cuti.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="check-square"></i>
+              <span>Persetujuan Cuti</span>
+            </a>
+            <?php endif; ?>
+            <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2 md:ml-auto">
+              <i data-feather="key"></i>
+              <span>Ganti Password</span>
+            </a>
+            <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="log-out"></i>
+              <span>Logout</span>
+            </a>
+          </div>
         </div>
+      </div>
     </nav>
+
+
+
+    
+    
+    
+    
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
@@ -395,6 +419,15 @@ if (!file_exists($fotoPath)) {
 
         // Initialize Feather icons
         feather.replace();
+        
+
+      const menuToggle = document.getElementById('menu-toggle');
+      const menu = document.getElementById('menu');
+    
+      menuToggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+      });
+
     </script>
 </body>
 </html>
