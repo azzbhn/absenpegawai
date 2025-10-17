@@ -44,8 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <body class="min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden">
         <div class="bg-[#F9B000] p-6 text-center">
-            <h1 class="text-2xl font-bold text-white">Sistem Absensi</h1>
-            <p class="text-white/90">Kecamatan Ajibarang</p>
+            <img src="../assets/logo.png" alt="Logo Kabupaten Banyumas" class="w-20 h-auto mx-auto mb-2">
+            <h1 class="text-3xl font-bold text-white">S I G M A</h1>
+            <p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi</p>
+            <p class="text-sm text-white/90">Kecamatan Ajibarang</p>
         </div>
         
         <div class="p-8">
@@ -58,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <form method="POST" class="space-y-6">
                 <div>
                     <label for="username" class="block text-gray-700 mb-2">Username</label>
-                    <input type="text" id="username" name="username" required 
+                    <input type="text" placeholder="NIP atau NIK" id="username" name="username" required 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
                 </div>
                 
                 <div>
                     <label for="password" class="block text-gray-700 mb-2">Password</label>
-                    <input type="password" id="password" name="password" required 
+                    <input type="password" placeholder="Password" id="password" name="password" required 
                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
                 </div>
                 
@@ -75,9 +77,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
             
             <div class="mt-6 text-center">
-                <p class="text-gray-600 text-sm">
-                    Sistem Absensi Berbasis Lokasi GPS
-                </p>
+                <p class="text-gray-600 text-sm">Sistem Absensi Berbasis Lokasi GPS</p>
+                <p class="text-gray-400 text-xs">© 2025 Kecamatan Ajibarang</p>
             </div>
         </div>
     </div>

@@ -83,92 +83,161 @@ if (!file_exists($fotoPath)) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Absensi Kecamatan Ajibarang</title>
+    <!-- Ikon Favicon -->
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Feather Icons -->
     <script src="https://unpkg.com/feather-icons"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <!-- Custom Styles -->
     <style>
         body {
             font-family: 'Poppins', sans-serif;
         }
+        /* Efek garis bawah untuk navigasi desktop */
+        .nav-link-desktop {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link-desktop::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #FBBF24; /* amber-300 */
+            transition: width 0.3s ease;
+        }
+        .nav-link-desktop:hover::after,
+        .nav-link-desktop.active::after {
+            width: 100%;
+        }
+        .nav-link-desktop:hover,
+        .nav-link-desktop.active {
+            color: #FFFFFF;
+        }
+        
+        /* Efek gradien dan bayangan untuk tombol mobile */
+        .nav-card-mobile {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .nav-card-mobile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1), 0 6px 6px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-[#F9B000] text-white shadow-lg">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
-                    <div>
-                        <h1 class="text-xl font-bold">Sistem Absensi</h1>
-                        <p class="text-white/90 text-sm">Kecamatan Ajibarang</p>
+<body class="bg-gray-100 min-h-screen">
+    
+    
+
+    <!-- Header & Navigasi Wrapper -->
+    <div class="sticky top-0 z-50">
+        <!-- Header Utama -->
+        <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-2xl">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center py-4">
+                    <!-- Bagian Kiri: Logo dan Judul -->
+                    <div class="flex items-center space-x-4">
+                        <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
+                        <div>
+                            <h1 class="text-xl md:text-2xl font-bold tracking-wider text-shadow">S I G M A</h1>
+                            <p class="hidden sm:block text-xs md:text-sm text-white/80">Sistem Informasi Geotagging untuk Monitoring Absensi</p>
+                        </div>
+                    </div>
+                    <!-- Bagian Kanan: Info Pengguna -->
+                    <div class="text-right bg-black/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/20">
+                        <p class="font-semibold text-base md:text-lg"><?= htmlspecialchars($user['nama']) ?></p>
+                        <p class="text-white/80 text-xs md:text-sm"><?= htmlspecialchars($user['jabatan']) ?></p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <p class="font-semibold"><?= htmlspecialchars($user['nama']) ?></p>
-                    <p class="text-white/80 text-sm"><?= htmlspecialchars($user['jabatan']) ?></p>
+            </div>
+        </header>
+
+        <!-- Navigasi -->
+        <nav class="bg-gray-800 text-white shadow-lg">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Menu Navigasi Desktop -->
+                <div class="hidden md:flex justify-center items-center py-2 space-x-6 text-gray-300">
+                    <a href="dashboard.php" class="nav-link-desktop active py-2 px-3 flex items-center space-x-2">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="absen.php" class="nav-link-desktop py-2 px-3 flex items-center space-x-2">
+                        <i data-feather="clock" class="w-5 h-5"></i>
+                        <span>Absensi</span>
+                    </a>
+                    <a href="ijin.php" class="nav-link-desktop py-2 px-3 flex items-center space-x-2">
+                        <i data-feather="calendar" class="w-5 h-5"></i>
+                        <span>Pengajuan Cuti</span>
+                    </a>
+                    <?php if ($user['jabatan'] == 'Administrator'): ?>
+                    <a href="data_absensi.php" class="nav-link-desktop py-2 px-3 flex items-center space-x-2">
+                        <i data-feather="file-text" class="w-5 h-5"></i>
+                        <span>Data Absensi</span>
+                    </a>
+                    <a href="persetujuan_cuti.php" class="nav-link-desktop py-2 px-3 flex items-center space-x-2">
+                        <i data-feather="check-square" class="w-5 h-5"></i>
+                        <span>Persetujuan Cuti</span>
+                    </a>
+                    <?php endif; ?>
+                    <div class="!ml-auto flex items-center space-x-4">
+                         <a href="ganti_password.php" class="nav-link-desktop py-2 px-3 flex items-center space-x-2">
+                            <i data-feather="key" class="w-5 h-5"></i>
+                            <span>Password</span>
+                        </a>
+                        <a href="logout.php" class="py-2 px-4 bg-red-500 hover:bg-red-600 rounded-full transition-colors duration-300 flex items-center space-x-2">
+                            <i data-feather="log-out" class="w-5 h-5"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Menu Navigasi Mobile -->
+                <div class="md:hidden p-4">
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-white text-sm">
+                        <a href="dashboard.php" class="nav-card-mobile bg-sky-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="home"></i> <span>Dashboard</span>
+                        </a>
+                        <a href="absen.php" class="nav-card-mobile bg-teal-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                             <i data-feather="clock"></i> <span>Absensi</span>
+                        </a>
+                        <a href="ijin.php" class="nav-card-mobile bg-amber-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="calendar"></i> <span>Pengajuan Cuti</span>
+                        </a>
+                        <?php if ($user['jabatan'] == 'Administrator'): ?>
+                        <a href="data_absensi.php" class="nav-card-mobile bg-blue-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="file-text"></i> <span>Data Absensi</span>
+                        </a>
+                        <a href="persetujuan_cuti.php" class="nav-card-mobile bg-indigo-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="check-square"></i> <span>Persetujuan</span>
+                        </a>
+                        <?php endif; ?>
+                        <a href="ganti_password.php" class="nav-card-mobile bg-orange-500 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="key"></i> <span>Password</span>
+                        </a>
+                        <a href="logout.php" class="nav-card-mobile bg-slate-500 col-span-2 sm:col-span-1 rounded-lg p-3 flex flex-col items-center justify-center space-y-2 shadow-lg">
+                            <i data-feather="log-out"></i> <span>Log Out</span>
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </nav>
+    </div>
 
-    
-    <!-- Navigation -->
-    <nav class="bg-[#1F9D55] text-white shadow-md">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between py-3">
-          <!-- Logo / Brand -->
-          <!--<div class="text-lg font-semibold flex items-center space-x-2">-->
-          <!--  <i data-feather="home"></i>-->
-          <!--  <span>Dashboard</span>-->
-          <!--</div>-->
-    
-          <!-- Hamburger Menu (Mobile) -->
-          <button id="menu-toggle" class="md:hidden focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-    
-          <!-- Menu Links -->
-          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0">
-            <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="home"></i>
-              <span>Dashboard</span>
-            </a>
-            <a href="absen.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="clock"></i>
-              <span>Absensi</span>
-            </a>
-            <a href="ijin.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="calendar"></i>
-              <span>Pengajuan Cuti</span>
-            </a>
-            <?php if ($user['jabatan'] == 'Administrator'): ?>
-            <a href="data_absensi.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="file-text"></i>
-              <span>Data Absensi</span>
-            </a>
-            <a href="persetujuan_cuti.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="check-square"></i>
-              <span>Persetujuan Cuti</span>
-            </a>
-            <?php endif; ?>
-            <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2 md:ml-auto">
-              <i data-feather="key"></i>
-              <span>Ganti Password</span>
-            </a>
-            <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="log-out"></i>
-              <span>Logout</span>
-            </a>
-          </div>
+    <!-- Konten halaman Anda akan dimulai di sini -->
+    <!-- <main class="p-4 sm:p-6 lg:p-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800">Selamat Datang!</h2>
+            <p class="text-gray-600 mt-2">Ini adalah area konten utama halaman Anda.</p>
         </div>
-      </div>
-    </nav>
-
+    </main> -->
 
 
     
@@ -264,40 +333,45 @@ if (!file_exists($fotoPath)) {
 
         <!-- Filter dan Riwayat Absensi -->
         <div class="bg-white rounded-2xl shadow-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-gray-800">Riwayat Absensi</h3>
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0">
+                <h3 class="text-xl font-bold text-gray-800 text-center sm:text-left">Riwayat Absensi</h3>
                 
                 <!-- Filter Bulan dan Tahun -->
-                <form method="GET" class="flex space-x-4">
-                    <select name="month" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000]">
-                        <?php foreach ($months as $key => $month): ?>
-                            <option value="<?= $key ?>" <?= $selected_month == $key ? 'selected' : '' ?>>
-                                <?= $month ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    <select name="year" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000]">
-                        <?php foreach ($years as $year): ?>
-                            <option value="<?= $year ?>" <?= $selected_year == $year ? 'selected' : '' ?>>
-                                <?= $year ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                    
-                    <button type="submit" 
-                            class="bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center space-x-2">
-                        <i data-feather="filter"></i>
-                        <span>Filter</span>
-                    </button>
-                    
-                    <a href="dashboard.php" 
-                       class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center space-x-2">
-                        <i data-feather="refresh-cw"></i>
-                        <span>Reset</span>
-                    </a>
+                <form method="GET" class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 w-full sm:w-auto">
+                    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 w-full sm:w-auto">
+                        <select name="month" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] w-full sm:w-auto">
+                            <?php foreach ($months as $key => $month): ?>
+                                <option value="<?= $key ?>" <?= $selected_month == $key ? 'selected' : '' ?>>
+                                    <?= $month ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        
+                        <select name="year" class="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] w-full sm:w-auto">
+                            <?php foreach ($years as $year): ?>
+                                <option value="<?= $year ?>" <?= $selected_year == $year ? 'selected' : '' ?>>
+                                    <?= $year ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:space-x-4 space-y-2 sm:space-y-0 w-full sm:w-auto">
+                        <button type="submit" 
+                            class="bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2 w-full sm:w-auto">
+                            <i data-feather="filter"></i>
+                            <span>Filter</span>
+                        </button>
+                        
+                        <a href="dashboard.php" 
+                            class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2 w-full sm:w-auto">
+                            <i data-feather="refresh-cw"></i>
+                            <span>Reset</span>
+                        </a>
+                    </div>
                 </form>
             </div>
+
 
             <div class="overflow-x-auto">
                 <table class="w-full table-auto">

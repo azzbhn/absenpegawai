@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="flex items-center space-x-4">
                     <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
                     <div>
-                        <h1 class="text-xl font-bold">Sistem Absensi</h1>
-                        <p class="text-white/90 text-sm">Kecamatan Ajibarang</p>
+                        <h1 class="text-xl font-bold">S I G M A</h1>
+                        <p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi Kecamatan Ajibarang</p>
                     </div>
                 </div>
                 <div class="text-right">
