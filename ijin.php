@@ -179,14 +179,14 @@ $riwayat_cuti = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header -->
-    <header class="bg-[#F9B000] text-white shadow-lg">
+    <header class="bg-[#F9B000] text-white shadow-lg no-print">
         <div class="container mx-auto px-4 py-4">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-4">
                     <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
                     <div>
-                        <h1 class="text-xl font-bold">S I G M A</h1>
-                        <p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi Kecamatan Ajibarang</p>
+                    	<h1 class="text-xl font-bold">S I G M A</h1>
+                    	<p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi - Kecamatan Ajibarang</p>
                     </div>
                 </div>
                 <div class="text-right">
@@ -197,25 +197,35 @@ $riwayat_cuti = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </header>
 
-    <!-- Navigation -->
+    
+    <!-- Navigation (Lengkap) - Dropdown Admin dengan background dan efek seragam -->
     <nav class="bg-[#1F9D55] text-white shadow-md no-print">
       <div class="container mx-auto px-4">
         <div class="flex items-center justify-between py-3">
-          <!-- Logo / Brand -->
-          <!--<div class="text-lg font-semibold flex items-center space-x-2">-->
-          <!--  <i data-feather="home"></i>-->
-          <!--  <span>Dashboard</span>-->
-          <!--</div>-->
     
-          <!-- Hamburger Menu (Mobile) -->
-          <button id="menu-toggle" class="md:hidden focus:outline-none">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
+          <!-- Menu Navigasi Mobile -->
+            <div class="md:hidden rounded-lg w-full shadow-lg p-4 mb-6">
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="dashboard.php" class="bg-blue-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Dashboard</a>
+                    <a href="absen.php" class="bg-green-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Absensi</a>
+                    <a href="ijin.php" class="bg-yellow-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Pengajuan Cuti</a>
+                    
+                    
+                    <?php if ($user['jabatan'] == 'Administrator'): ?>
+                    <a href="data_absensi.php" class="bg-purple-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Absensi</a>
+                    <a href="persetujuan_cuti.php" class="bg-indigo-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Persetujuan</a>
+                    <a href="tambah_pegawai.php" class="bg-pink-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Tambah Pegawai</a>
+                    <a href="data_pegawai.php" class="bg-pink-800 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Pegawai</a>
+                    <?php endif; ?>
+                    
+                    
+                    <a href="ganti_password.php" class="bg-yellow-600 text-white text-center py-2 px-4 rounded-lg font-semibold">Password</a>
+                    <a href="logout.php" class="bg-gray-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Log Out</a>
+                </div>
+            </div>
     
-          <!-- Menu Links -->
-          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0">
+          <!-- Menu Links (Desktop) -->
+          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0 items-center w-full">
             <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
               <i data-feather="home"></i>
               <span>Dashboard</span>
@@ -228,36 +238,59 @@ $riwayat_cuti = $stmt->fetchAll(PDO::FETCH_ASSOC);
               <i data-feather="calendar"></i>
               <span>Pengajuan Cuti</span>
             </a>
+    
+            <!-- Admin Dropdown -->
             <?php if ($user['jabatan'] == 'Administrator'): ?>
-            <a href="data_absensi.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="file-text"></i>
-              <span>Data Absensi</span>
-            </a>
-            <a href="persetujuan_cuti.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="check-square"></i>
-              <span>Persetujuan Cuti</span>
-            </a>
+            <div class="relative group">
+              <button class="flex items-center space-x-2 py-2 px-3 hover:bg-[#188a4a] rounded transition focus:outline-none">
+                <i data-feather="shield"></i>
+                <span>Admin</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+    
+              <!-- Dropdown -->
+              <div class="absolute left-0 mt-2 w-48 bg-[#1F9D55] text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition duration-200 z-10">
+                <a href="data_absensi.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-t-lg">
+                  <i data-feather="file-text"></i>
+                  <span>Data Absensi</span>
+                </a>
+                <a href="persetujuan_cuti.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition">
+                  <i data-feather="check-square"></i>
+                  <span>Persetujuan Cuti</span>
+                </a>
+                <a href="tambah_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
+                  <i data-feather="user-plus"></i>
+                  <span>Tambah Pegawai</span>
+                </a>
+                <a href="data_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
+                  <i data-feather="users"></i>
+                  <span>Data Pegawai</span>
+                </a>
+              </div>
+            </div>
             <?php endif; ?>
-            <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2 md:ml-auto">
-              <i data-feather="key"></i>
-              <span>Ganti Password</span>
-            </a>
-            <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="log-out"></i>
-              <span>Logout</span>
-            </a>
+    
+            <!-- Menu kanan -->
+            <div class="flex items-center ml-auto space-x-2">
+              <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+                <i data-feather="key"></i>
+                <span>Ganti Password</span>
+              </a>
+              <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+                <i data-feather="log-out"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+    
           </div>
         </div>
       </div>
     </nav>
     
     <script>
-      const menuToggle = document.getElementById('menu-toggle');
-      const menu = document.getElementById('menu');
-    
-      menuToggle.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-      });
+      if (typeof feather !== 'undefined') {
+        feather.replace();
+      }
     </script>
 
     <!-- Main Content -->

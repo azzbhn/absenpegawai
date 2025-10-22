@@ -78,3 +78,7 @@ SET jumlah_hari = CASE
     ELSE 
         DATEDIFF(tanggal_selesai, tanggal_mulai) + 1
     END;
+    
+
+ALTER TABLE `pegawai`
+ADD COLUMN `status` ENUM('Aktif', 'Nonaktif') NOT NULL DEFAULT 'Aktif' AFTER `username`;

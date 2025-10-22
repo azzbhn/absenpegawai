@@ -5,9 +5,9 @@ session_start();
 date_default_timezone_set('Asia/Jakarta');
 
 $host = 'localhost';
-$dbname = 'absensi_ajibarang';
-$username = 'root';
-$password = '';
+$dbname = 'absen_kec_db';
+$username = 'absen_kec_root';
+$password = '500114899';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
