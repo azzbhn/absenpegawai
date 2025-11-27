@@ -472,9 +472,9 @@ $total_data = count($absensi);
                 <p>Mengetahui,</p>
                 <p>Camat Ajibarang</p>
                 <br><br><br>
-                <p><strong>Arif Ependi, A.P., M.Si</strong></p>
+                <p><strong>Drs. Rojingun, M.Si</strong></p>
                 <p>Pembina Tingkat I (IV/b)</p>
-                <p>NIP. 197306031994031003</p>
+                <p>NIP. 197302071993031003</p>
             </div>
         </div>
     </main>
