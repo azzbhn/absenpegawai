@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -96,6 +97,119 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body class="bg-gray-50 min-h-screen">
     <!-- Header & Navigasi bisa dicopy dari file data_pegawai.php -->
+    <!-- Header -->
+    <header class="bg-[#F9B000] text-white shadow-lg no-print">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
+                    <div>
+                    	<h1 class="text-xl font-bold">S I G M A</h1>
+                    	<p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi - Kecamatan Ajibarang</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="font-semibold"><?= htmlspecialchars($_SESSION['user']['nama']) ?></p>
+                    <p class="text-white/80 text-sm"><?= htmlspecialchars($_SESSION['user']['jabatan']) ?></p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-[#1F9D55] text-white shadow-md no-print">
+      <div class="container mx-auto px-4">
+        <div class="flex items-center justify-between py-3">
+    
+          <!-- Menu Navigasi Mobile -->
+            <div class="md:hidden rounded-lg w-full shadow-lg p-4 mb-6">
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="dashboard.php" class="bg-blue-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Dashboard</a>
+                    <a href="absen.php" class="bg-green-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Absensi</a>
+                    <a href="ijin.php" class="bg-yellow-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Pengajuan Cuti</a>
+                    
+                    
+                    <?php if ($_SESSION['user']['jabatan'] == 'Administrator'): ?>
+                    <a href="data_absensi.php" class="bg-purple-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Absensi</a>
+                    <a href="persetujuan_cuti.php" class="bg-indigo-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Persetujuan</a>
+                    <a href="tambah_pegawai.php" class="bg-pink-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Tambah Pegawai</a>
+                    <a href="data_pegawai.php" class="bg-pink-800 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Pegawai</a>
+                    <?php endif; ?>
+                    
+                    
+                    <a href="ganti_password.php" class="bg-yellow-600 text-white text-center py-2 px-4 rounded-lg font-semibold">Password</a>
+                    <a href="logout.php" class="bg-gray-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Log Out</a>
+                </div>
+            </div>
+    
+          <!-- Menu Links (Desktop) -->
+          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0 items-center w-full">
+            <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="home"></i>
+              <span>Dashboard</span>
+            </a>
+            <a href="absen.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="clock"></i>
+              <span>Absensi</span>
+            </a>
+            <a href="ijin.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+              <i data-feather="calendar"></i>
+              <span>Pengajuan Cuti</span>
+            </a>
+    
+            <!-- Admin Dropdown -->
+            <?php if ($_SESSION['user']['jabatan'] == 'Administrator'): ?>
+            <div class="relative group">
+              <button class="flex items-center space-x-2 py-2 px-3 hover:bg-[#188a4a] rounded transition focus:outline-none">
+                <i data-feather="shield"></i>
+                <span>Admin</span>
+                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              </button>
+    
+              <!-- Dropdown -->
+              <div class="absolute left-0 mt-2 w-48 bg-[#1F9D55] text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition duration-200 z-10">
+                <a href="data_absensi.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-t-lg">
+                  <i data-feather="file-text"></i>
+                  <span>Data Absensi</span>
+                </a>
+                <a href="persetujuan_cuti.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition">
+                  <i data-feather="check-square"></i>
+                  <span>Persetujuan Cuti</span>
+                </a>
+                <a href="tambah_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
+                  <i data-feather="user-plus"></i>
+                  <span>Tambah Pegawai</span>
+                </a>
+                <a href="data_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
+                  <i data-feather="users"></i>
+                  <span>Data Pegawai</span>
+                </a>
+              </div>
+            </div>
+            <?php endif; ?>
+    
+            <!-- Menu kanan -->
+            <div class="flex items-center ml-auto space-x-2">
+              <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+                <i data-feather="key"></i>
+                <span>Ganti Password</span>
+              </a>
+              <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
+                <i data-feather="log-out"></i>
+                <span>Logout</span>
+              </a>
+            </div>
+    
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <script>
+      if (typeof feather !== 'undefined') {
+        feather.replace();
+      }
+    </script>
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
@@ -135,8 +249,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <select id="jabatan" name="jabatan" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000]">
                                 <option value="Administrator" <?= $pegawai['jabatan'] == 'Administrator' ? 'selected' : '' ?>>Administrator</option>
                                 <option value="Camat" <?= $pegawai['jabatan'] == 'Camat' ? 'selected' : '' ?>>Camat</option>
-                                <!-- Tambahkan option jabatan lain sesuai kebutuhan -->
-                                 <option value="Sekretaris Kecamatan" <?= $pegawai['jabatan'] == 'Sekretaris Kecamatan' ? 'selected' : '' ?>>Sekretaris Kecamatan</option>
+                                <option value="Sekretaris Kecamatan" <?= $pegawai['jabatan'] == 'Sekretaris Kecamatan' ? 'selected' : '' ?>>Sekretaris Kecamatan</option>
+                                <option value="Staf" <?= $pegawai['jabatan'] == 'Staf' ? 'selected' : '' ?>>Staf</option>
+                                <option value="Jaga Malam" <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'selected' : '' ?>>Jaga Malam</option>
                             </select>
                         </div>
                          <div>
@@ -186,6 +301,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     </div>
                 </form>
+
+                <!-- Informasi Jam Kerja -->
+                <div class="mt-8 p-6 <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'bg-blue-50' : 'bg-green-50' ?> rounded-lg border <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'border-blue-200' : 'border-green-200' ?>">
+                    <h4 class="font-semibold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-800' : 'text-green-800' ?> mb-3">Informasi Jam Kerja Saat Ini:</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-700 mb-1">Jam Masuk</h5>
+                            <p class="text-lg font-bold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-600' : 'text-green-600' ?>">
+                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '14:30 - 16:30' : '06:15 - 08:15' ?>
+                            </p>
+                            <p class="text-sm <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-500' : 'text-green-500' ?>">
+                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '(1 jam sebelum & sesudah 15:30)' : '(1 jam sebelum & sesudah 07:15)' ?>
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg">
+                            <h5 class="font-semibold text-gray-700 mb-1">Jam Pulang</h5>
+                            <p class="text-lg font-bold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-600' : 'text-green-600' ?>">
+                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '00:00 - 10:00' : '15:30 - 19:30' ?>
+                            </p>
+                            <p class="text-sm <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-500' : 'text-green-500' ?>">
+                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '(4 jam setelah 06:00)' : '(4 jam setelah 15:30)' ?>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="<?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-700' : 'text-green-700' ?> text-sm mt-3">
+                        <i data-feather="info" class="w-4 h-4 inline mr-1"></i>
+                        <strong>Fleksibilitas:</strong> Absen masuk 1 jam sebelum & sesudah waktu, Absen pulang 4 jam setelah waktu.
+                    </p>
+                </div>
             </div>
         </div>
     </main>

@@ -54,6 +54,101 @@ $absensi = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Hitung total data
 $total_data = count($absensi);
+
+// ========== ENTERPRISE SECURITY HEADERS ==========
+class SecurityManager {
+    private static $initialized = false;
+    
+    public static function init() {
+        if (self::$initialized) return;
+        
+        // Basic Security Headers
+        header("X-Content-Type-Options: nosniff");
+        header("X-Frame-Options: DENY");
+        header("X-XSS-Protection: 1; mode=block");
+        
+        // Cache Control
+        header("Cache-Control: no-cache, no-store, must-revalidate, private");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        
+        // Remove Server Info
+        header_remove("X-Powered-By");
+        
+        // Enhanced Security Headers
+        self::setEnhancedHeaders();
+        
+        // Start output compression
+        if (extension_loaded('zlib') && !ini_get('zlib.output_compression')) {
+            ob_start('ob_gzhandler');
+        } else {
+            ob_start();
+        }
+        
+        self::$initialized = true;
+    }
+    
+    private static function setEnhancedHeaders() {
+        // Content Security Policy
+        $csp = [
+            "default-src 'self'",
+            
+            // Scripts
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net",
+            
+            // Styles
+            "style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net",
+            
+            // Fonts
+            "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com https://cdn.jsdelivr.net",
+            
+            // Images
+            "img-src 'self' data: https:",
+            
+            // AJAX, fetch
+            "connect-src 'self'",
+            
+            // Security
+            "frame-ancestors 'none'",
+            "base-uri 'self'",
+            "form-action 'self'"
+        ];
+
+        
+        header("Content-Security-Policy: " . implode('; ', $csp));
+        
+        // Additional Security Headers
+        header("Referrer-Policy: strict-origin-when-cross-origin");
+        header("Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()");
+        
+        // HSTS - hanya di HTTPS
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+        }
+    }
+}
+
+// Initialize security
+SecurityManager::init();
+
+// Helper function dengan sanitization
+function getPageTitle($default = "Kecamatan Ajibarang") {
+    $title = isset($GLOBALS['pageTitle']) ? $GLOBALS['pageTitle'] : $default;
+    return htmlspecialchars($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+}
+
+// Set default page title jika belum di-set
+if (!isset($GLOBALS['pageTitle'])) {
+    $GLOBALS['pageTitle'] = "Kecamatan Ajibarang";
+}
+
+// HTML Minifier
+ob_start(function($buffer) {
+    $buffer = preg_replace('/\s+/', ' ', $buffer);
+    $buffer = preg_replace('/>\s+</', '><', $buffer);
+    $buffer = preg_replace('/<!--(.*?)-->/', '', $buffer);
+    return $buffer;
+});
 ?>
 
 <!DOCTYPE html>
@@ -427,10 +522,14 @@ $total_data = count($absensi);
                                 <td class="px-6 py-4 text-sm text-gray-900 print:px-3 print:py-2 print:text-xs"><?= $absen['jam_keluar'] ? htmlspecialchars($absen['jam_keluar']) : '-' ?></td>
                                 <td class="px-6 py-4 print:px-3 print:py-2">
                                     <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold print:px-2 print:py-0.5 
-                                        <?= $absen['status'] == 'hadir' ? 'bg-green-100 text-green-800 print:bg-green-200' : 
+                                        <?= $absen['jabatan'] == 'Jaga Malam' ? 'bg-blue-100 text-blue-800 print:bg-blue-200' : 
+                                           ($absen['status'] == 'hadir' ? 'bg-green-100 text-green-800 print:bg-green-200' : 
                                            ($absen['status'] == 'izin' ? 'bg-yellow-100 text-yellow-800 print:bg-yellow-200' : 
-                                           ($absen['status'] == 'sakit' ? 'bg-red-100 text-red-800 print:bg-red-200' : 'bg-blue-100 text-blue-800 print:bg-blue-200')) ?>">
-                                        <?= strtoupper($absen['status']) ?>
+                                           ($absen['status'] == 'sakit' ? 'bg-red-100 text-red-800 print:bg-red-200' : 
+                                           ($absen['status'] == 'cuti tahunan' ? 'bg-purple-100 text-purple-800 print:bg-purple-200' :
+                                           ($absen['status'] == 'cuti sakit' ? 'bg-pink-100 text-pink-800 print:bg-pink-200' :
+                                           'bg-gray-100 text-gray-800 print:bg-gray-200'))))) ?>">
+                                        <?= $absen['jabatan'] == 'Jaga Malam' ? 'JAGA MALAM' : strtoupper($absen['status']) ?>
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 no-print">

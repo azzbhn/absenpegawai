@@ -60,10 +60,6 @@ ALTER TABLE absensi MODIFY status ENUM('hadir', 'izin', 'sakit', 'dinas luar', '
 -- Tambahkan kolom jumlah_hari ke tabel pengajuan_cuti
 ALTER TABLE pengajuan_cuti ADD COLUMN jumlah_hari INT DEFAULT 0;
 
-ALTER TABLE `pegawai`
-ADD COLUMN `status` ENUM('Aktif', 'Nonaktif') NOT NULL DEFAULT 'Aktif' AFTER `username`;
-
-
 -- Update data yang sudah ada (untuk cuti tahunan hitung hari kerja, untuk cuti sakit semua hari)
 UPDATE pengajuan_cuti 
 SET jumlah_hari = CASE 
@@ -83,3 +79,6 @@ SET jumlah_hari = CASE
         DATEDIFF(tanggal_selesai, tanggal_mulai) + 1
     END;
     
+
+ALTER TABLE `pegawai`
+ADD COLUMN `status` ENUM('Aktif', 'Nonaktif') NOT NULL DEFAULT 'Aktif' AFTER `username`;

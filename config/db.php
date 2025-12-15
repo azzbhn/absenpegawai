@@ -53,4 +53,45 @@ function generateDateRange($startDate, $endDate) {
     
     return $dates;
 }
+
+// Tambahkan fungsi baru untuk validasi waktu berdasarkan jabatan
+function validateJamAbsensi($jabatan, $action, $jam) {
+    $jam = date('H:i', strtotime($jam));
+    
+    if ($jabatan == 'Jaga Malam') {
+        if ($action == 'masuk') {
+            // Jaga Malam: masuk 15:30 - 23:59
+            $batas_awal = '15:30';
+            $batas_akhir = '23:59';
+            return ($jam >= $batas_awal && $jam <= $batas_akhir);
+        } elseif ($action == 'pulang') {
+            // Jaga Malam: pulang 00:00 - 06:00
+            $batas_awal = '00:00';
+            $batas_akhir = '06:00';
+            return ($jam >= $batas_awal && $jam <= $batas_akhir);
+        }
+    } else {
+        // Pegawai reguler
+        if ($action == 'masuk') {
+            // Reguler: masuk maksimal 07:15
+            $batas_akhir = '07:15';
+            return ($jam <= $batas_akhir);
+        } elseif ($action == 'pulang') {
+            // Reguler: pulang minimal 15:30
+            $batas_awal = '15:30';
+            return ($jam >= $batas_awal);
+        }
+    }
+    
+    return false;
+}
+
+// Fungsi untuk mendapatkan batas waktu berdasarkan jabatan
+function getBatasWaktu($jabatan, $action) {
+    if ($jabatan == 'Jaga Malam') {
+        return $action == 'masuk' ? '15:30 - 23:59' : '00:00 - 06:00';
+    } else {
+        return $action == 'masuk' ? 'Paling lambat 07:15' : 'Setelah 15:30';
+    }
+}
 ?>

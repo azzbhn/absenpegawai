@@ -75,6 +75,100 @@ if (!file_exists($fotoPath)) {
     $fotoPath = "assets/pegawai/default.png"; // fallback jika foto tidak ada
 }
 
+// ========== ENTERPRISE SECURITY HEADERS ==========
+class SecurityManager {
+    private static $initialized = false;
+    
+    public static function init() {
+        if (self::$initialized) return;
+        
+        // Basic Security Headers
+        header("X-Content-Type-Options: nosniff");
+        header("X-Frame-Options: DENY");
+        header("X-XSS-Protection: 1; mode=block");
+        
+        // Cache Control
+        header("Cache-Control: no-cache, no-store, must-revalidate, private");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        
+        // Remove Server Info
+        header_remove("X-Powered-By");
+        
+        // Enhanced Security Headers
+        self::setEnhancedHeaders();
+        
+        // Start output compression
+        if (extension_loaded('zlib') && !ini_get('zlib.output_compression')) {
+            ob_start('ob_gzhandler');
+        } else {
+            ob_start();
+        }
+        
+        self::$initialized = true;
+    }
+    
+    private static function setEnhancedHeaders() {
+        // Content Security Policy
+        $csp = [
+            "default-src 'self'",
+            
+            // Scripts
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net",
+            
+            // Styles
+            "style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net",
+            
+            // Fonts
+            "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com https://cdn.jsdelivr.net",
+            
+            // Images
+            "img-src 'self' data: https:",
+            
+            // AJAX, fetch
+            "connect-src 'self'",
+            
+            // Security
+            "frame-ancestors 'none'",
+            "base-uri 'self'",
+            "form-action 'self'"
+        ];
+
+        
+        header("Content-Security-Policy: " . implode('; ', $csp));
+        
+        // Additional Security Headers
+        header("Referrer-Policy: strict-origin-when-cross-origin");
+        header("Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()");
+        
+        // HSTS - hanya di HTTPS
+        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+            header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
+        }
+    }
+}
+
+// Initialize security
+SecurityManager::init();
+
+// Helper function dengan sanitization
+function getPageTitle($default = "Kecamatan Ajibarang") {
+    $title = isset($GLOBALS['pageTitle']) ? $GLOBALS['pageTitle'] : $default;
+    return htmlspecialchars($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+}
+
+// Set default page title jika belum di-set
+if (!isset($GLOBALS['pageTitle'])) {
+    $GLOBALS['pageTitle'] = "Kecamatan Ajibarang";
+}
+
+// HTML Minifier
+ob_start(function($buffer) {
+    $buffer = preg_replace('/\s+/', ' ', $buffer);
+    $buffer = preg_replace('/>\s+</', '><', $buffer);
+    $buffer = preg_replace('/<!--(.*?)-->/', '', $buffer);
+    return $buffer;
+});
 ?>
 
 <!DOCTYPE html>
@@ -294,6 +388,36 @@ if (!file_exists($fotoPath)) {
                 <div class="text-center p-4 bg-purple-50 rounded-lg">
                     <p class="text-2xl font-bold text-purple-600"><?= $statistik_bulanan['dinas_luar'] ?></p>
                     <p class="text-sm text-purple-800">Dinas Luar</p>
+                </div>
+                 <!--Di bagian Statistik Bulanan, tambahkan kartu informasi shift -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 text-center">
+                     <!--Foto pegawai dengan rasio 3:4 -->
+                    <!--<div class="w-20 h-28 rounded-xl overflow-hidden mx-auto mb-4">-->
+                    <!--    <img src="<?= $fotoPath ?>" -->
+                    <!--         alt="Foto Pegawai <?= $nip ?>" -->
+                    <!--         class="w-full h-full object-cover">-->
+                    <!--</div>-->
+                
+                    <!--<h3 class="text-lg font-semibold text-gray-800 mb-2"><?= htmlspecialchars($user['nama']) ?></h3>-->
+                    <!--<p class="text-gray-600">NIP: <?= $nip ?></p>-->
+                    <!--<p class="text-gray-600">Jabatan: <?= htmlspecialchars($user['jabatan']) ?></p>-->
+                    
+                     <!--Tambahkan informasi shift -->
+                    <!--<?php-->
+                    <!--$is_jaga_malam = ($user['jabatan'] == 'Jaga Malam');-->
+                    <!--?>-->
+                    <!--<div class="mt-4 p-3 <?= $is_jaga_malam ? 'bg-blue-50' : 'bg-green-50' ?> rounded-lg">-->
+                    <!--    <p class="font-semibold <?= $is_jaga_malam ? 'text-blue-700' : 'text-green-700' ?> mb-1">Shift Kerja</p>-->
+                    <!--    <p class="text-sm <?= $is_jaga_malam ? 'text-blue-600' : 'text-green-600' ?>">-->
+                    <!--        <?= $is_jaga_malam ? 'Jaga Malam' : 'Reguler' ?>-->
+                    <!--    </p>-->
+                    <!--    <div class="mt-2 text-xs <?= $is_jaga_malam ? 'text-blue-500' : 'text-green-500' ?>">-->
+                    <!--        <p>• Masuk: <?= $is_jaga_malam ? '14:30 - 16:30' : '06:15 - 08:15' ?></p>-->
+                    <!--        <p>• <?= $is_jaga_malam ? '(1 jam sebelum & sesudah 15:30)' : '(1 jam sebelum & sesudah 07:15)' ?></p>-->
+                    <!--        <p>• Pulang: <?= $is_jaga_malam ? '00:00 - 10:00' : '15:30 - 19:30' ?></p>-->
+                    <!--        <p>• <?= $is_jaga_malam ? '(4 jam setelah 06:00)' : '(4 jam setelah 15:30)' ?></p>-->
+                    <!--    </div>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
