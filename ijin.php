@@ -7,252 +7,6 @@ if (!isset($_SESSION['user'])) {
 }
 
 $user = $_SESSION['user'];
-
-// Ambil data cuti dari database
-$stmt = $pdo->prepare('
-    SELECT 
-        jatah_cuti_tahunan,
-        cuti_tahunan_diambil,
-        total_cuti_sakit
-    FROM pegawai 
-    WHERE id_pegawai = ?
-');
-$stmt->execute([$user['id_pegawai']]);
-$data_cuti = $stmt->fetch(PDO::FETCH_ASSOC);
-
-$jatah_cuti = $data_cuti['jatah_cuti_tahunan'];
-$cuti_dipakai = $data_cuti['cuti_tahunan_diambil'];
-$sisa_cuti = $jatah_cuti - $cuti_dipakai;
-$total_sakit = $data_cuti['total_cuti_sakit'];
-
-// Fungsi untuk menghitung hari kerja (exclude Sabtu-Minggu)
-function hitungHariKerja($tanggal_mulai, $tanggal_selesai) {
-    $start = new DateTime($tanggal_mulai);
-    $end = new DateTime($tanggal_selesai);
-    $end->modify('+1 day'); // Include end date
-    
-    $interval = DateInterval::createFromDateString('1 day');
-    $period = new DatePeriod($start, $interval, $end);
-    
-    $hari_kerja = 0;
-    foreach ($period as $dt) {
-        $dayOfWeek = $dt->format('N'); // 1 (Monday) to 7 (Sunday)
-        if ($dayOfWeek < 6) { // 1-5 are Monday-Friday
-            $hari_kerja++;
-        }
-    }
-    return $hari_kerja;
-}
-
-// Fungsi untuk menghitung semua hari (termasuk Sabtu-Minggu)
-function hitungSemuaHari($tanggal_mulai, $tanggal_selesai) {
-    $start = new DateTime($tanggal_mulai);
-    $end = new DateTime($tanggal_selesai);
-    $end->modify('+1 day'); // Include end date
-    
-    $interval = DateInterval::createFromDateString('1 day');
-    $period = new DatePeriod($start, $interval, $end);
-    
-    return iterator_count($period);
-}
-
-// Proses pengajuan cuti
-$success = '';
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $jenis_cuti = $_POST['jenis_cuti'];
-    $tanggal_mulai = $_POST['tanggal_mulai'];
-    $tanggal_selesai = $_POST['tanggal_selesai'];
-    $link_data_dukung = $_POST['link_data_dukung'];
-
-    // Validasi
-    if (empty($tanggal_mulai) || empty($tanggal_selesai)) {
-        $error = 'Tanggal mulai dan tanggal selesai harus diisi!';
-    } elseif ($tanggal_mulai > $tanggal_selesai) {
-        $error = 'Tanggal mulai tidak boleh lebih besar dari tanggal selesai!';
-    } else {
-        // Cek apakah ada tanggal yang sudah ada di absensi
-        $stmt_check = $pdo->prepare('
-            SELECT tanggal FROM absensi 
-            WHERE id_pegawai = ? 
-            AND tanggal BETWEEN ? AND ?
-            AND status IN ("hadir", "izin", "sakit", "dinas luar")
-        ');
-        $stmt_check->execute([$user['id_pegawai'], $tanggal_mulai, $tanggal_selesai]);
-        $tanggal_konflik = $stmt_check->fetchAll(PDO::FETCH_COLUMN);
-        
-        if (!empty($tanggal_konflik)) {
-            $error = 'Terdapat konflik dengan tanggal yang sudah ada absensi: ' . 
-                     implode(', ', array_map(function($date) { 
-                         return date('d/m/Y', strtotime($date)); 
-                     }, $tanggal_konflik));
-        } else {
-            // Hitung jumlah hari cuti berdasarkan jenis cuti
-            if ($jenis_cuti == 'tahunan') {
-                $jumlah_hari = hitungHariKerja($tanggal_mulai, $tanggal_selesai); // Exclude weekend
-            } else {
-                $jumlah_hari = hitungSemuaHari($tanggal_mulai, $tanggal_selesai); // Include semua hari
-            }
-
-            // Validasi khusus cuti tahunan
-            if ($jenis_cuti == 'tahunan') {
-                if ($sisa_cuti <= 0) {
-                    $error = 'Sisa cuti tahunan Anda sudah habis!';
-                } elseif ($jumlah_hari > $sisa_cuti) {
-                    $error = 'Jumlah hari cuti (' . $jumlah_hari . ' hari) melebihi sisa cuti tahunan Anda (' . $sisa_cuti . ' hari)!';
-                }
-            }
-
-            if (!$error) {
-                try {
-                    // Simpan pengajuan cuti
-                    $stmt = $pdo->prepare('
-                        INSERT INTO pengajuan_cuti 
-                        (id_pegawai, jenis_cuti, tanggal_mulai, tanggal_selesai, link_data_dukung, status, jumlah_hari) 
-                        VALUES (?, ?, ?, ?, ?, "pending", ?)
-                    ');
-                    $stmt->execute([
-                        $user['id_pegawai'],
-                        $jenis_cuti,
-                        $tanggal_mulai,
-                        $tanggal_selesai,
-                        $link_data_dukung,
-                        $jumlah_hari
-                    ]);
-
-                    $success = 'Pengajuan cuti berhasil dikirim! Status: Menunggu persetujuan.';
-                    
-                    // Refresh data cuti
-                    $stmt = $pdo->prepare('
-                        SELECT 
-                            jatah_cuti_tahunan,
-                            cuti_tahunan_diambil,
-                            total_cuti_sakit
-                        FROM pegawai 
-                        WHERE id_pegawai = ?
-                    ');
-                    $stmt->execute([$user['id_pegawai']]);
-                    $data_cuti = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-                    $jatah_cuti = $data_cuti['jatah_cuti_tahunan'];
-                    $cuti_dipakai = $data_cuti['cuti_tahunan_diambil'];
-                    $sisa_cuti = $jatah_cuti - $cuti_dipakai;
-                    $total_sakit = $data_cuti['total_cuti_sakit'];
-
-                } catch (PDOException $e) {
-                    $error = 'Terjadi kesalahan: ' . $e->getMessage();
-                }
-            }
-        }
-    }
-}
-
-// Ambil riwayat pengajuan cuti
-$stmt = $pdo->prepare('
-    SELECT *, 
-           DATE_FORMAT(tanggal_pengajuan, "%d/%m/%Y %H:%i") as waktu_pengajuan
-    FROM pengajuan_cuti 
-    WHERE id_pegawai = ? 
-    ORDER BY tanggal_pengajuan DESC
-');
-$stmt->execute([$user['id_pegawai']]);
-$riwayat_cuti = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// ========== ENTERPRISE SECURITY HEADERS ==========
-class SecurityManager {
-    private static $initialized = false;
-    
-    public static function init() {
-        if (self::$initialized) return;
-        
-        // Basic Security Headers
-        header("X-Content-Type-Options: nosniff");
-        header("X-Frame-Options: DENY");
-        header("X-XSS-Protection: 1; mode=block");
-        
-        // Cache Control
-        header("Cache-Control: no-cache, no-store, must-revalidate, private");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        
-        // Remove Server Info
-        header_remove("X-Powered-By");
-        
-        // Enhanced Security Headers
-        self::setEnhancedHeaders();
-        
-        // Start output compression
-        if (extension_loaded('zlib') && !ini_get('zlib.output_compression')) {
-            ob_start('ob_gzhandler');
-        } else {
-            ob_start();
-        }
-        
-        self::$initialized = true;
-    }
-    
-    private static function setEnhancedHeaders() {
-        // Content Security Policy
-        $csp = [
-            "default-src 'self'",
-            
-            // Scripts
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://unpkg.com https://cdn.jsdelivr.net",
-            
-            // Styles
-            "style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdnjs.cloudflare.com https://fonts.googleapis.com https://unpkg.com https://cdn.jsdelivr.net",
-            
-            // Fonts
-            "font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com https://cdn.jsdelivr.net",
-            
-            // Images
-            "img-src 'self' data: https:",
-            
-            // AJAX, fetch
-            "connect-src 'self'",
-            
-            // Security
-            "frame-ancestors 'none'",
-            "base-uri 'self'",
-            "form-action 'self'"
-        ];
-
-        
-        header("Content-Security-Policy: " . implode('; ', $csp));
-        
-        // Additional Security Headers
-        header("Referrer-Policy: strict-origin-when-cross-origin");
-        header("Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=()");
-        
-        // HSTS - hanya di HTTPS
-        if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
-            header("Strict-Transport-Security: max-age=31536000; includeSubDomains");
-        }
-    }
-}
-
-// Initialize security
-SecurityManager::init();
-
-// Helper function dengan sanitization
-function getPageTitle($default = "Kecamatan Ajibarang") {
-    $title = isset($GLOBALS['pageTitle']) ? $GLOBALS['pageTitle'] : $default;
-    return htmlspecialchars($title, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-}
-
-// Set default page title jika belum di-set
-if (!isset($GLOBALS['pageTitle'])) {
-    $GLOBALS['pageTitle'] = "Kecamatan Ajibarang";
-}
-
-// HTML Minifier
-ob_start(function($buffer) {
-    $buffer = preg_replace('/\s+/', ' ', $buffer);
-    $buffer = preg_replace('/>\s+</', '><', $buffer);
-    $buffer = preg_replace('/<!--(.*?)-->/', '', $buffer);
-    return $buffer;
-});
 ?>
 
 <!DOCTYPE html>
@@ -260,512 +14,84 @@ ob_start(function($buffer) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pengajuan Cuti - Kecamatan Ajibarang</title>
+    <title>Kendali Izin - Absensi Kecamatan Ajibarang</title>
     <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        body { font-family: 'Poppins', sans-serif; }
+        .construction-card {
+            transition: all 0.3s ease;
+        }
+        .animate-bounce-slow {
+            animation: bounce 3s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(-5%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+            50% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
         }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-[#F9B000] text-white shadow-lg no-print">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
+    <?php include 'components/header.php'; ?>
+    <?php include 'components/navigation.php'; ?>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-8 border-l-8 border-yellow-500">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg mr-4">
+                        <i data-feather="info" class="text-yellow-600 w-8 h-8"></i>
+                    </div>
                     <div>
-                    	<h1 class="text-xl font-bold">S I G M A</h1>
-                    	<p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi - Kecamatan Ajibarang</p>
+                        <h2 class="text-2xl font-bold text-gray-800">Kendali Izin Pegawai</h2>
+                        <p class="text-gray-600">Fitur permohonan dan riwayat izin operasional</p>
                     </div>
                 </div>
-                <div class="text-right">
-                    <p class="font-semibold"><?= htmlspecialchars($user['nama']) ?></p>
-                    <p class="text-white/80 text-sm"><?= htmlspecialchars($user['jabatan']) ?></p>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-xl p-12 text-center construction-card">
+                <div class="mb-8 flex justify-center">
+                    <div class="relative">
+                        <i data-feather="tool" class="w-24 h-24 text-gray-200 absolute -top-4 -left-4"></i>
+                        <i data-feather="settings" class="w-32 h-32 text-yellow-500 animate-spin-slow" style="animation-duration: 10s;"></i>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </header>
-
-    
-    <!-- Navigation (Lengkap) - Dropdown Admin dengan background dan efek seragam -->
-    <nav class="bg-[#1F9D55] text-white shadow-md no-print">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between py-3">
-    
-          <!-- Menu Navigasi Mobile -->
-            <div class="md:hidden rounded-lg w-full shadow-lg p-4 mb-6">
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="dashboard.php" class="bg-blue-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Dashboard</a>
-                    <a href="absen.php" class="bg-green-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Absensi</a>
-                    <a href="ijin.php" class="bg-yellow-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Pengajuan Cuti</a>
-                    
-                    
-                    <?php if ($user['jabatan'] == 'Administrator'): ?>
-                    <a href="data_absensi.php" class="bg-purple-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Absensi</a>
-                    <a href="persetujuan_cuti.php" class="bg-indigo-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Persetujuan</a>
-                    <a href="tambah_pegawai.php" class="bg-pink-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Tambah Pegawai</a>
-                    <a href="data_pegawai.php" class="bg-pink-800 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Pegawai</a>
-                    <?php endif; ?>
-                    
-                    
-                    <a href="ganti_password.php" class="bg-yellow-600 text-white text-center py-2 px-4 rounded-lg font-semibold">Password</a>
-                    <a href="logout.php" class="bg-gray-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Log Out</a>
-                </div>
-            </div>
-    
-          <!-- Menu Links (Desktop) -->
-          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0 items-center w-full">
-            <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="home"></i>
-              <span>Dashboard</span>
-            </a>
-            <a href="absen.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="clock"></i>
-              <span>Absensi</span>
-            </a>
-            <a href="ijin.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="calendar"></i>
-              <span>Pengajuan Cuti</span>
-            </a>
-    
-            <!-- Admin Dropdown -->
-            <?php if ($user['jabatan'] == 'Administrator'): ?>
-            <div class="relative group">
-              <button class="flex items-center space-x-2 py-2 px-3 hover:bg-[#188a4a] rounded transition focus:outline-none">
-                <i data-feather="shield"></i>
-                <span>Admin</span>
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-              </button>
-    
-              <!-- Dropdown -->
-              <div class="absolute left-0 mt-2 w-48 bg-[#1F9D55] text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition duration-200 z-10">
-                <a href="data_absensi.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-t-lg">
-                  <i data-feather="file-text"></i>
-                  <span>Data Absensi</span>
-                </a>
-                <a href="persetujuan_cuti.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition">
-                  <i data-feather="check-square"></i>
-                  <span>Persetujuan Cuti</span>
-                </a>
-                <a href="tambah_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
-                  <i data-feather="user-plus"></i>
-                  <span>Tambah Pegawai</span>
-                </a>
-                <a href="data_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
-                  <i data-feather="users"></i>
-                  <span>Data Pegawai</span>
-                </a>
-              </div>
-            </div>
-            <?php endif; ?>
-    
-            <!-- Menu kanan -->
-            <div class="flex items-center ml-auto space-x-2">
-              <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-                <i data-feather="key"></i>
-                <span>Ganti Password</span>
-              </a>
-              <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-                <i data-feather="log-out"></i>
-                <span>Logout</span>
-              </a>
-            </div>
-    
-          </div>
-        </div>
-      </div>
-    </nav>
-    
-    <script>
-      if (typeof feather !== 'undefined') {
-        feather.replace();
-      }
-    </script>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2">Pengajuan Cuti</h2>
-            <p class="text-gray-600">Ajukan cuti tahunan atau cuti sakit melalui form berikut.</p>
-        </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- Informasi Cuti -->
-            <div class="bg-white rounded-2xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Informasi Cuti Anda</h3>
                 
-                <div class="space-y-4">
-                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                        <span class="font-semibold">Nama:</span>
-                        <span><?= htmlspecialchars($user['nama']) ?></span>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
-                        <span class="font-semibold">Jatah Cuti Tahunan:</span>
-                        <span><?= $jatah_cuti ?> hari</span>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-orange-50 rounded-lg">
-                        <span class="font-semibold">Cuti Tahunan Diambil:</span>
-                        <span><?= $cuti_dipakai ?> hari</span>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-green-50 rounded-lg">
-                        <span class="font-semibold">Sisa Cuti Tahunan:</span>
-                        <span class="font-bold <?= $sisa_cuti > 0 ? 'text-green-600' : 'text-red-600' ?>">
-                            <?= $sisa_cuti ?> hari
-                        </span>
-                    </div>
-                    <div class="flex justify-between items-center p-4 bg-yellow-50 rounded-lg">
-                        <span class="font-semibold">Total Cuti Sakit:</span>
-                        <span><?= $total_sakit ?> hari</span>
-                    </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-4">Halaman Sedang Dikembangkan</h1>
+                <p class="text-gray-500 text-lg mb-8 max-w-md mx-auto">
+                    Mohon maaf, fitur <strong>Kendali Izin</strong> saat ini sedang dalam tahap pengerjaan oleh tim IT untuk memberikan pengalaman terbaik bagi Anda. Untuk mengajukan cuti silahkan hubungi <strong>Pengelola Kepegawaian</strong>.
+                </p>
+
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="dashboard.php" class="inline-flex items-center px-6 py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-gray-700 transition shadow-lg">
+                        <i data-feather="arrow-left" class="w-5 h-5 mr-2"></i>
+                        Kembali ke Dashboard
+                    </a>
+                    <a href="cuti.php" class="inline-flex items-center px-6 py-3 bg-yellow-500 text-white font-semibold rounded-xl hover:bg-yellow-600 transition shadow-lg">
+                        <i data-feather="calendar" class="w-5 h-5 mr-2"></i>
+                        Lihat Data Cuti
+                    </a>
                 </div>
 
-                <div class="mt-6 p-4 bg-purple-50 rounded-lg">
-                    <h4 class="font-semibold text-purple-800 mb-2">Informasi:</h4>
-                    <ul class="text-purple-700 text-sm space-y-1">
-                        <li>• Cuti tahunan hanya menghitung hari kerja (Senin-Jumat)</li>
-                        <li>• Cuti sakit menghitung semua hari (termasuk Sabtu-Minggu)</li>
-                        <li>• Cuti tahunan mengurangi sisa cuti tahunan</li>
-                        <li>• Cuti sakit tidak mengurangi jatah cuti tahunan</li>
-                        <li>• Pengajuan cuti harus disetujui oleh admin</li>
-                    </ul>
+                <div class="mt-12 pt-8 border-t border-gray-100">
+                    <div class="flex items-center justify-center space-x-2 text-sm text-gray-400">
+                        <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+                        <span>Estimasi selesai: Segera</span>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Form Pengajuan -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 lg:col-span-2">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Form Pengajuan Cuti</h3>
-                
-                <?php if ($success): ?>
-                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
-                        <?= $success ?>
-                    </div>
-                <?php endif; ?>
-                
-                <?php if ($error): ?>
-                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-                        <?= $error ?>
-                    </div>
-                <?php endif; ?>
-
-                <form method="POST" class="space-y-6">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Mulai <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="tanggal_mulai" name="tanggal_mulai" required 
-                                   min="<?= date('Y-m-d') ?>"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
-                        </div>
-
-                        <div>
-                            <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700 mb-2">
-                                Tanggal Selesai <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" id="tanggal_selesai" name="tanggal_selesai" required 
-                                   min="<?= date('Y-m-d') ?>"
-                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label for="jenis_cuti" class="block text-sm font-medium text-gray-700 mb-2">
-                            Jenis Cuti <span class="text-red-500">*</span>
-                        </label>
-                        <select id="jenis_cuti" name="jenis_cuti" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
-                            <option value="">Pilih Jenis Cuti</option>
-                            <option value="tahunan" <?= $sisa_cuti <= 0 ? 'disabled' : '' ?>>
-                                Cuti Tahunan <?= $sisa_cuti <= 0 ? '(Sisa cuti habis)' : '' ?>
-                            </option>
-                            <option value="sakit">Cuti Sakit</option>
-                        </select>
-                        <p class="text-xs text-gray-500 mt-1" id="info-cuti">
-                            <?php if ($sisa_cuti <= 0): ?>
-                                <span class="text-red-600">Sisa cuti tahunan Anda sudah habis. Silakan pilih cuti sakit.</span>
-                            <?php else: ?>
-                                Sisa cuti tahunan: <?= $sisa_cuti ?> hari
-                            <?php endif; ?>
-                        </p>
-                    </div>
-
-                    <div>
-                        <label for="link_data_dukung" class="block text-sm font-medium text-gray-700 mb-2">
-                            Link Data Dukung
-                        </label>
-                        <input type="url" id="link_data_dukung" name="link_data_dukung"
-                               placeholder="https://drive.google.com/... atau link lainnya"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F9B000] focus:border-transparent">
-                        <p class="text-xs text-gray-500 mt-1">
-                            Optional. Link Google Drive, Dropbox, atau platform berbagi file lainnya untuk mengunggah dokumen pendukung.
-                        </p>
-                    </div>
-
-                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                        <div class="flex items-center">
-                            <i data-feather="info" class="w-5 h-5 text-yellow-600 mr-2"></i>
-                            <span class="font-semibold text-yellow-800">Informasi Hari Cuti</span>
-                        </div>
-                        <p class="text-yellow-700 text-sm mt-2" id="info-hari-cuti">
-                            Pilih tanggal mulai, selesai, dan jenis cuti untuk melihat jumlah hari cuti
-                        </p>
-                        <p class="text-yellow-600 text-xs mt-1" id="info-catatan">
-                            <!-- Untuk menampilkan catatan perhitungan -->
-                        </p>
-                    </div>
-
-                    <button type="submit" 
-                            class="w-full bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
-                        <i data-feather="send"></i>
-                        <span>Ajukan Cuti</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Riwayat Pengajuan Cuti -->
-        <div class="mt-12">
-            <div class="bg-white rounded-2xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Riwayat Pengajuan Cuti</h3>
-                
-                <?php if (empty($riwayat_cuti)): ?>
-                    <div class="text-center py-8 text-gray-500">
-                        <i data-feather="inbox" class="w-12 h-12 mx-auto text-gray-400 mb-2"></i>
-                        <p>Belum ada riwayat pengajuan cuti</p>
-                    </div>
-                <?php else: ?>
-                    <div class="overflow-x-auto">
-                        <table class="w-full table-auto">
-                            <thead>
-                                <tr class="bg-gray-50">
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">No</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Tanggal Pengajuan</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Jenis Cuti</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Periode</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Jumlah Hari</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
-                                    <th class="px-4 py-3 text-left text-sm font-semibold text-gray-700">Data Dukung</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                <?php $no = 1; ?>
-                                <?php foreach ($riwayat_cuti as $cuti): ?>
-                                <tr class="hover:bg-gray-50 transition duration-150">
-                                    <td class="px-4 py-3 text-sm text-gray-900"><?= $no++ ?></td>
-                                    <td class="px-4 py-3 text-sm text-gray-900"><?= $cuti['waktu_pengajuan'] ?></td>
-                                    <td class="px-4 py-3 text-sm text-gray-900">
-                                        <?= $cuti['jenis_cuti'] == 'tahunan' ? 'Cuti Tahunan' : 'Cuti Sakit' ?>
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-gray-900">
-                                        <?= date('d/m/Y', strtotime($cuti['tanggal_mulai'])) ?> - 
-                                        <?= date('d/m/Y', strtotime($cuti['tanggal_selesai'])) ?>
-                                    </td>
-                                    <td class="px-4 py-3 text-sm text-gray-900"><?= $cuti['jumlah_hari'] ?> hari</td>
-                                    <td class="px-4 py-3">
-                                        <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold 
-                                            <?= $cuti['status'] == 'disetujui' ? 'bg-green-100 text-green-800' : 
-                                               ($cuti['status'] == 'ditolak' ? 'bg-red-100 text-red-800' : 'bg-yellow-100 text-yellow-800') ?>">
-                                            <?= $cuti['status'] == 'disetujui' ? 'DISETUJUI' : 
-                                               ($cuti['status'] == 'ditolak' ? 'DITOLAK' : 'MENUNGGU') ?>
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <?php if ($cuti['link_data_dukung']): ?>
-                                            <a href="<?= htmlspecialchars($cuti['link_data_dukung']) ?>" 
-                                               target="_blank" 
-                                               class="text-blue-600 hover:text-blue-800 flex items-center space-x-1">
-                                                <i data-feather="external-link" class="w-4 h-4"></i>
-                                                <span>Lihat</span>
-                                            </a>
-                                        <?php else: ?>
-                                            <span class="text-gray-400">-</span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endif; ?>
             </div>
         </div>
     </main>
 
     <script>
-        feather.replace();
-
-        // Fungsi untuk menghitung hari kerja (exclude Sabtu-Minggu)
-        function hitungHariKerja(tanggalMulai, tanggalSelesai) {
-            const start = new Date(tanggalMulai);
-            const end = new Date(tanggalSelesai);
-            end.setDate(end.getDate() + 1); // Include end date
-            
-            let hariKerja = 0;
-            const current = new Date(start);
-            
-            while (current < end) {
-                const dayOfWeek = current.getDay(); // 0 (Minggu) to 6 (Sabtu)
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    hariKerja++;
-                }
-                current.setDate(current.getDate() + 1);
+        // Initialize Feather Icons
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof feather !== 'undefined') {
+                feather.replace();
             }
-            return hariKerja;
-        }
-
-        // Fungsi untuk menghitung semua hari (termasuk Sabtu-Minggu)
-        function hitungSemuaHari(tanggalMulai, tanggalSelesai) {
-            const start = new Date(tanggalMulai);
-            const end = new Date(tanggalSelesai);
-            const timeDiff = end.getTime() - start.getTime();
-            const dayDiff = timeDiff / (1000 * 3600 * 24);
-            return dayDiff + 1; // Include both start and end dates
-        }
-
-        // Fungsi untuk mendapatkan nama hari
-        function getNamaHari(tanggal) {
-            const hari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const date = new Date(tanggal);
-            return hari[date.getDay()];
-        }
-
-        // Hitung jumlah hari cuti berdasarkan jenis cuti
-        function hitungHariCuti() {
-            const tanggalMulai = document.getElementById('tanggal_mulai').value;
-            const tanggalSelesai = document.getElementById('tanggal_selesai').value;
-            const jenisCuti = document.getElementById('jenis_cuti').value;
-            const infoElement = document.getElementById('info-hari-cuti');
-            const catatanElement = document.getElementById('info-catatan');
-
-            if (tanggalMulai && tanggalSelesai && jenisCuti) {
-                let jumlahHari, catatan;
-                
-                if (jenisCuti === 'tahunan') {
-                    jumlahHari = hitungHariKerja(tanggalMulai, tanggalSelesai);
-                    catatan = 'Cuti tahunan hanya menghitung hari kerja (Senin-Jumat)';
-                } else {
-                    jumlahHari = hitungSemuaHari(tanggalMulai, tanggalSelesai);
-                    catatan = 'Cuti sakit menghitung semua hari (termasuk Sabtu-Minggu)';
-                }
-                
-                if (jumlahHari > 0) {
-                    const hariMulai = getNamaHari(tanggalMulai);
-                    const hariSelesai = getNamaHari(tanggalSelesai);
-                    
-                    infoElement.innerHTML = `<strong>${jumlahHari} hari</strong> cuti (${hariMulai}, ${tanggalMulai} sampai ${hariSelesai}, ${tanggalSelesai})`;
-                    infoElement.className = 'text-green-700 text-sm mt-2';
-                    
-                    catatanElement.textContent = catatan;
-                    catatanElement.className = 'text-yellow-600 text-xs mt-1';
-                } else {
-                    infoElement.innerHTML = 'Tidak ada hari cuti dalam periode yang dipilih';
-                    infoElement.className = 'text-red-700 text-sm mt-2';
-                    catatanElement.textContent = '';
-                }
-            } else {
-                infoElement.innerHTML = 'Pilih tanggal mulai, selesai, dan jenis cuti untuk melihat jumlah hari cuti';
-                infoElement.className = 'text-yellow-700 text-sm mt-2';
-                catatanElement.textContent = '';
-            }
-        }
-
-        // Event listeners
-        document.getElementById('tanggal_mulai').addEventListener('change', function() {
-            const tanggalSelesai = document.getElementById('tanggal_selesai');
-            if (this.value) {
-                tanggalSelesai.min = this.value;
-            }
-            hitungHariCuti();
         });
-
-        document.getElementById('tanggal_selesai').addEventListener('change', hitungHariCuti);
-        document.getElementById('jenis_cuti').addEventListener('change', hitungHariCuti);
-
-        // Validasi form
-        document.querySelector('form').addEventListener('submit', function(e) {
-            const tanggalMulai = document.getElementById('tanggal_mulai').value;
-            const tanggalSelesai = document.getElementById('tanggal_selesai').value;
-            const jenisCuti = document.getElementById('jenis_cuti').value;
-            const sisaCuti = <?= $sisa_cuti ?>;
-
-            if (!tanggalMulai || !tanggalSelesai || !jenisCuti) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Data Tidak Lengkap',
-                    text: 'Semua field yang bertanda * harus diisi',
-                    confirmButtonText: 'OK'
-                });
-                return false;
-            }
-
-            if (tanggalMulai > tanggalSelesai) {
-                e.preventDefault();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Tanggal Tidak Valid',
-                    text: 'Tanggal mulai tidak boleh lebih besar dari tanggal selesai',
-                    confirmButtonText: 'OK'
-                });
-                return false;
-            }
-
-            // Hitung hari untuk validasi cuti tahunan
-            if (jenisCuti === 'tahunan') {
-                let jumlahHari;
-                if (jenisCuti === 'tahunan') {
-                    jumlahHari = hitungHariKerja(tanggalMulai, tanggalSelesai);
-                } else {
-                    jumlahHari = hitungSemuaHari(tanggalMulai, tanggalSelesai);
-                }
-
-                if (jumlahHari > sisaCuti) {
-                    e.preventDefault();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Cuti Tidak Mencukupi',
-                        text: `Anda mengajukan ${jumlahHari} hari cuti, tetapi sisa cuti tahunan hanya ${sisaCuti} hari`,
-                        confirmButtonText: 'OK'
-                    });
-                    return false;
-                }
-            }
-
-            // Tampilkan loading
-            Swal.fire({
-                title: 'Mengajukan Cuti...',
-                text: 'Sedang mengirim pengajuan cuti',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-        });
-
-        <?php if ($success): ?>
-            Swal.fire({
-                icon: 'success',
-                title: 'Berhasil',
-                text: '<?= $success ?>',
-                timer: 3000,
-                showConfirmButton: false
-            });
-        <?php endif; ?>
-
-        <?php if ($error): ?>
-            Swal.fire({
-                icon: 'error',
-                title: 'Gagal',
-                text: '<?= $error ?>',
-                confirmButtonText: 'OK'
-            });
-        <?php endif; ?>
     </script>
 </body>
 </html>

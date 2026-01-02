@@ -53,6 +53,9 @@ $sudah_absen_pulang = $absensi && $absensi['jam_keluar'] != null;
 // Untuk kompatibilitas dengan kode lain
 $absensi_hari_ini = $absensi;
 
+// Tentukan apakah hari ini Jumat (5 = Friday)
+$is_friday = (date('N') == 5); // 1=Monday, 5=Friday, 7=Sunday
+
 // Proses absensi - GUNAKAN WAKTU SERVER
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // CEK APAKAH SEDANG CUTI - TAMBAHKAN VALIDASI INI
@@ -111,11 +114,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         exit;
                     }
                 } elseif ($action == 'pulang') {
-                    // Reguler: pulang tetap 15:30 sampai 4 jam setelah 15:30 (19:30)
-                    if ($jam_sekarang < '15:30' || $jam_sekarang > '19:30') {
-                        $_SESSION['error'] = 'Jam pulang untuk pegawai reguler adalah antara 15:30 - 19:30 (4 jam setelah 15:30). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
+                    // PERBAIKAN: Kebijakan baru ditambah 1 jam sebelumnya
+                    // Reguler: pulang 15:30 (atau 15:15 Jumat) dikurangi 1 jam, sampai 4 jam setelahnya.
+                    
+                    if ($is_friday) {
+                        // Hari Jumat: 14:15 - 19:15 (15:15 minus 1 jam s/d 15:15 plus 4 jam)
+                        if ($jam_sekarang < '14:15' || $jam_sekarang > '19:15') {
+                            $_SESSION['error'] = 'Jam pulang untuk pegawai reguler hari Jumat adalah antara 14:15 - 19:15 (1 jam sebelum 15:15 s/d 4 jam sesudahnya). Waktu sekarang: ' . $jam_sekarang;
+                            header('Location: absen.php');
+                            exit;
+                        }
+                    } else {
+                        // Hari selain Jumat: 14:30 - 19:30 (15:30 minus 1 jam s/d 15:30 plus 4 jam)
+                        if ($jam_sekarang < '14:30' || $jam_sekarang > '19:30') {
+                            $_SESSION['error'] = 'Jam pulang untuk pegawai reguler adalah antara 14:30 - 19:30 (1 jam sebelum 15:30 s/d 4 jam sesudahnya). Waktu sekarang: ' . $jam_sekarang;
+                            header('Location: absen.php');
+                            exit;
+                        }
                     }
                 }
             }
@@ -140,7 +155,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit;
                 
             } elseif ($action == 'pulang') {
-                // PERBAIKAN: Izinkan absen pulang meskipun belum absen masuk
+                // PERBAIKAN: Izinkan absen pulang meskipun belum absen masuk (Dihapus blok yang memblokir jika belum absen masuk)
+                
                 if ($sudah_absen_pulang) {
                     $_SESSION['error'] = 'Anda sudah absen pulang hari ini.';
                     header('Location: absen.php');
@@ -230,114 +246,8 @@ unset($_SESSION['error']);
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="bg-[#F9B000] text-white shadow-lg no-print">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-4">
-                    <img src="assets/logo.png" alt="Logo" class="w-12 h-12">
-                    <div>
-                    	<h1 class="text-xl font-bold">S I G M A</h1>
-                    	<p class="text-sm text-white">Sistem Informasi Geotagging untuk Monitoring Absensi - Kecamatan Ajibarang</p>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <p class="font-semibold"><?= htmlspecialchars($user['nama']) ?></p>
-                    <p class="text-white/80 text-sm"><?= htmlspecialchars($user['jabatan']) ?></p>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    
-    <!-- Navigation (Lengkap) - Dropdown Admin dengan background dan efek seragam -->
-    <nav class="bg-[#1F9D55] text-white shadow-md no-print">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between py-3">
-    
-          <!-- Menu Navigasi Mobile -->
-            <div class="md:hidden rounded-lg w-full shadow-lg p-4 mb-6">
-                <div class="grid grid-cols-2 gap-2">
-                    <a href="dashboard.php" class="bg-blue-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Dashboard</a>
-                    <a href="absen.php" class="bg-green-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Absensi</a>
-                    <a href="ijin.php" class="bg-yellow-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Pengajuan Cuti</a>
-                    
-                    
-                    <?php if ($user['jabatan'] == 'Administrator'): ?>
-                    <a href="data_absensi.php" class="bg-purple-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Absensi</a>
-                    <a href="persetujuan_cuti.php" class="bg-indigo-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Persetujuan</a>
-                    <a href="tambah_pegawai.php" class="bg-pink-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Tambah Pegawai</a>
-                    <a href="data_pegawai.php" class="bg-pink-800 text-white text-center py-2 px-4 rounded-lg font-semibold">Data Pegawai</a>
-                    <?php endif; ?>
-                    
-                    
-                    <a href="ganti_password.php" class="bg-yellow-600 text-white text-center py-2 px-4 rounded-lg font-semibold">Password</a>
-                    <a href="logout.php" class="bg-gray-500 text-white text-center py-2 px-4 rounded-lg font-semibold">Log Out</a>
-                </div>
-            </div>
-    
-          <!-- Menu Links (Desktop) -->
-          <div id="menu" class="hidden md:flex md:space-x-6 flex-col md:flex-row mt-3 md:mt-0 items-center w-full">
-            <a href="dashboard.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="home"></i>
-              <span>Dashboard</span>
-            </a>
-            <a href="absen.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="clock"></i>
-              <span>Absensi</span>
-            </a>
-            <a href="ijin.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-              <i data-feather="calendar"></i>
-              <span>Pengajuan Cuti</span>
-            </a>
-    
-            <!-- Admin Dropdown -->
-            <?php if ($user['jabatan'] == 'Administrator'): ?>
-            <div class="relative group">
-              <button class="flex items-center space-x-2 py-2 px-3 hover:bg-[#188a4a] rounded transition focus:outline-none">
-                <i data-feather="shield"></i>
-                <span>Admin</span>
-                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-              </button>
-    
-              <!-- Dropdown -->
-              <div class="absolute left-0 mt-2 w-48 bg-[#1F9D55] text-white rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transform -translate-y-2 group-hover:translate-y-0 transition duration-200 z-10">
-                <a href="data_absensi.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-t-lg">
-                  <i data-feather="file-text"></i>
-                  <span>Data Absensi</span>
-                </a>
-                <a href="persetujuan_cuti.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition">
-                  <i data-feather="check-square"></i>
-                  <span>Persetujuan Cuti</span>
-                </a>
-                <a href="tambah_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
-                  <i data-feather="user-plus"></i>
-                  <span>Tambah Pegawai</span>
-                </a>
-                <a href="data_pegawai.php" class="flex items-center space-x-2 px-4 py-2 hover:bg-[#188a4a] transition rounded-b-lg">
-                  <i data-feather="users"></i>
-                  <span>Data Pegawai</span>
-                </a>
-              </div>
-            </div>
-            <?php endif; ?>
-    
-            <!-- Menu kanan -->
-            <div class="flex items-center ml-auto space-x-2">
-              <a href="ganti_password.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-                <i data-feather="key"></i>
-                <span>Ganti Password</span>
-              </a>
-              <a href="logout.php" class="py-2 px-3 hover:bg-[#188a4a] rounded transition flex items-center space-x-2">
-                <i data-feather="log-out"></i>
-                <span>Logout</span>
-              </a>
-            </div>
-    
-          </div>
-        </div>
-      </div>
-    </nav>
+    <?php include 'components/header.php'; ?>
+    <?php include 'components/navigation.php'; ?>
     
     <script>
       if (typeof feather !== 'undefined') {
@@ -349,6 +259,9 @@ unset($_SESSION['error']);
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Absensi Pegawai</h2>
             <p class="text-gray-600">Silakan lakukan absensi masuk dan pulang di halaman ini.</p>
+            <!--<?php if ($is_friday && !$is_jaga_malam): ?>-->
+            <!--    <p class="text-yellow-600 font-semibold mt-2"><i data-feather="info" class="inline mr-1"></i> Hari Jumat: Jam pulang reguler diperbolehkan mulai pukul 14:15</p>-->
+            <!--<?php endif; ?>-->
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -417,15 +330,21 @@ unset($_SESSION['error']);
                     <div class="flex justify-between items-center p-4 <?= $is_jaga_malam ? 'bg-blue-50' : 'bg-gray-50' ?> rounded-lg">
                         <span class="font-semibold">Jam Absen Pulang:</span>
                         <span class="font-semibold <?= $is_jaga_malam ? 'text-blue-600' : 'text-green-600' ?>">
-                            <!--<?= $is_jaga_malam ? '00:00 - 10:00' : '15:30 - 19:30' ?>-->
+                            
                         </span>
                         <span class="text-xs <?= $is_jaga_malam ? 'text-blue-500' : 'text-green-500' ?> ml-2">
-                            <?= $is_jaga_malam ? '(4 jam setelah 06:00)' : '(4 jam setelah 15:30)' ?>
+                            <?php 
+                            if ($is_jaga_malam) {
+                                echo '(4 jam setelah 06:00)';
+                            } else {
+                                echo $is_friday ? '(1 jam sebelum 15:15 s/d 4 jam sesudahnya)' : '(1 jam sebelum 15:30 s/d 4 jam sesudahnya)';
+                            }
+                            ?>
                         </span>
                     </div>
                     <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                         <span class="font-semibold">Tanggal Server:</span>
-                        <span><?= date('d/m/Y') ?></span>
+                        <span><?= date('d/m/Y') ?> (<?= $is_friday ? 'Jumat' : date('l') ?>)</span>
                     </div>
                     <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
                         <span class="font-semibold">Waktu Server (WIB):</span>
@@ -471,7 +390,7 @@ unset($_SESSION['error']);
                     <div class="space-y-4">
                         <?php if ($is_jaga_malam): ?>
                             <?php if ($current_hour >= '00:00' && $current_hour <= '10:00'): ?>
-                                <!-- Periode pulang (00:00 - 10:00) - PERBAIKAN: Izinkan absen pulang meskipun belum absen masuk -->
+                                
                                 <?php if (!$sudah_absen_pulang): ?>
                                     <button type="submit" name="action" value="pulang" 
                                             class="w-full bg-[#C1272D] hover:bg-[#a82025] text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
@@ -496,7 +415,7 @@ unset($_SESSION['error']);
                                 <?php elseif ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
                                     <div class="w-full bg-blue-100 text-blue-800 font-bold py-4 px-6 rounded-lg text-center">
                                         <i data-feather="info" class="inline mr-2"></i>
-                                        Anda sudah absen masuk. Tunggu waktu pulang (00:00-10:00 atau 18:31-23:59).
+                                        Anda sudah absen masuk. Belum waktunya absen pulang.
                                     </div>
                                 <?php else: ?>
                                     <div class="w-full bg-green-100 text-green-800 font-bold py-4 px-6 rounded-lg text-center">
@@ -507,17 +426,12 @@ unset($_SESSION['error']);
                             
                             <?php elseif ($current_hour > '18:30' && $current_hour <= '23:59'): ?>
                                 <!-- Periode setelah jam masuk sampai tengah malam (18:31 - 23:59) -->
-                                <?php if ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
+                                <?php if (!$sudah_absen_pulang): ?>
                                     <button type="submit" name="action" value="pulang" 
                                             class="w-full bg-[#C1272D] hover:bg-[#a82025] text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
                                         <i data-feather="log-out"></i>
                                         <span>Absen Pulang Shift Malam</span>
                                     </button>
-                                <?php elseif (!$sudah_absen_masuk): ?>
-                                    <div class="w-full bg-gray-100 text-gray-600 font-bold py-4 px-6 rounded-lg text-center">
-                                        <i data-feather="clock" class="inline mr-2"></i>
-                                        Anda belum absen masuk. Tidak dapat melakukan absen pulang.
-                                    </div>
                                 <?php else: ?>
                                     <div class="w-full bg-green-100 text-green-800 font-bold py-4 px-6 rounded-lg text-center">
                                         <i data-feather="check-circle" class="inline mr-2"></i>
@@ -532,7 +446,7 @@ unset($_SESSION['error']);
                                     <?php if ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
                                         Waktu absen pulang sudah lewat (00:00-10:00). Hubungi administrator.
                                     <?php else: ?>
-                                        Belum waktunya absen shift malam. Jam masuk: 14:30-18:30.
+                                        Belum waktunya absen shift malam.
                                     <?php endif; ?>
                                 </div>
                             <?php endif; ?>
@@ -550,7 +464,7 @@ unset($_SESSION['error']);
                                 <?php elseif ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
                                     <div class="w-full bg-blue-100 text-blue-800 font-bold py-4 px-6 rounded-lg text-center">
                                         <i data-feather="info" class="inline mr-2"></i>
-                                        Anda sudah absen masuk. Tunggu waktu pulang (15:30-19:30).
+                                        Anda sudah absen masuk. Belum waktunya absen pulang.
                                     </div>
                                 <?php else: ?>
                                     <div class="w-full bg-green-100 text-green-800 font-bold py-4 px-6 rounded-lg text-center">
@@ -559,19 +473,15 @@ unset($_SESSION['error']);
                                     </div>
                                 <?php endif; ?>
                             
-                            <?php elseif ($current_hour >= '15:30' && $current_hour <= '19:30'): ?>
-                                <!-- Periode pulang reguler (15:30 - 19:30) -->
-                                <?php if ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
+                            <?php elseif (($is_friday && $current_hour >= '14:15' && $current_hour <= '19:15') || 
+                                         (!$is_friday && $current_hour >= '14:30' && $current_hour <= '19:30')): ?>
+                                <!-- Periode pulang reguler - PERBAIKAN: Ditambah 1 jam sebelumnya & bisa absen pulang tanpa absen masuk -->
+                                <?php if (!$sudah_absen_pulang): ?>
                                     <button type="submit" name="action" value="pulang" 
                                             class="w-full bg-[#C1272D] hover:bg-[#a82025] text-white font-bold py-4 px-6 rounded-lg transition duration-200 transform hover:scale-105 flex items-center justify-center space-x-2">
                                         <i data-feather="log-out"></i>
                                         <span>Absen Pulang</span>
                                     </button>
-                                <?php elseif (!$sudah_absen_masuk): ?>
-                                    <div class="w-full bg-yellow-100 border border-yellow-300 text-yellow-800 font-bold py-4 px-6 rounded-lg text-center">
-                                        <i data-feather="alert-triangle" class="inline mr-2"></i>
-                                        Anda belum absen masuk hari ini. Tidak dapat melakukan absen pulang.
-                                    </div>
                                 <?php else: ?>
                                     <div class="w-full bg-green-100 text-green-800 font-bold py-4 px-6 rounded-lg text-center">
                                         <i data-feather="check-circle" class="inline mr-2"></i>
@@ -584,16 +494,16 @@ unset($_SESSION['error']);
                                 <div class="w-full bg-gray-100 text-gray-600 font-bold py-4 px-6 rounded-lg text-center">
                                     <i data-feather="clock" class="inline mr-2"></i>
                                     <?php if ($current_hour < '06:15'): ?>
-                                        Belum waktunya absen masuk (06:15-08:15).
-                                    <?php elseif ($current_hour > '08:15' && $current_hour < '15:30'): ?>
+                                        Belum waktunya absen masuk.
+                                    <?php elseif ($current_hour > '08:15' && $current_hour < ($is_friday ? '14:15' : '14:30')): ?>
                                         <?php if ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
-                                            Tunggu waktu pulang (15:30-19:30).
+                                            Belum waktunya absen pulang.
                                         <?php else: ?>
-                                            Belum waktunya absen pulang (15:30-19:30).
+                                            Belum waktunya absen pulang.
                                         <?php endif; ?>
-                                    <?php elseif ($current_hour > '19:30'): ?>
+                                    <?php elseif ($current_hour > ($is_friday ? '19:15' : '19:30')): ?>
                                         <?php if ($sudah_absen_masuk && !$sudah_absen_pulang): ?>
-                                            Waktu absen pulang sudah lewat (15:30-19:30). Hubungi administrator.
+                                            Waktu absen pulang sudah lewat. Hubungi administrator.
                                         <?php else: ?>
                                             Waktu absensi sudah lewat untuk hari ini.
                                         <?php endif; ?>
@@ -660,9 +570,12 @@ unset($_SESSION['error']);
                 <div class="mt-6 p-4 <?= $is_jaga_malam ? 'bg-blue-50 border border-blue-200' : 'bg-green-50 border border-green-200' ?> rounded-lg">
                     <h4 class="font-semibold <?= $is_jaga_malam ? 'text-blue-800' : 'text-green-800' ?> mb-2">Informasi Fleksibilitas Waktu:</h4>
                     <p class="<?= $is_jaga_malam ? 'text-blue-700' : 'text-green-700' ?> text-sm">• Absen masuk dapat dilakukan 1 jam sebelum dan sesudah waktu yang ditentukan</p>
-                    <p class="<?= $is_jaga_malam ? 'text-blue-700' : 'text-green-700' ?> text-sm">• Absen pulang tetap maksimal 4 jam setelah waktu yang ditentukan</p>
+                    <p class="<?= $is_jaga_malam ? 'text-blue-700' : 'text-green-700' ?> text-sm">• Absen pulang dapat dilakukan walau lupa absen masuk.</p>
                     <?php if ($is_jaga_malam): ?>
-                    <p class="text-blue-700 text-sm font-semibold">• Untuk Jaga Malam: Absen pulang di jam 00:00-10:00 dapat dilakukan meskipun belum absen masuk</p>
+                        <p class="text-blue-700 text-sm">• Absen pulang tetap maksimal 4 jam setelah waktu yang ditentukan</p>
+                        <p class="text-blue-700 text-sm font-semibold">• Untuk Jaga Malam: Absen pulang di jam 00:00-10:00 dapat dilakukan meskipun belum absen masuk</p>
+                    <?php else: ?>
+                        <p class="<?= $is_friday ? 'text-yellow-600 font-semibold' : 'text-green-700' ?> text-sm">• <?= $is_friday ? 'Hari Jumat' : 'Hari Senin-Kamis' ?>: Absen pulang dimulai pukul <?= $is_friday ? '14:15' : '14:30' ?> (1 jam sebelum waktu normal s/d 4 jam sesudahnya)</p>
                     <?php endif; ?>
                 </div>
             </div>
@@ -996,6 +909,10 @@ unset($_SESSION['error']);
                     }
                 }
             } else {
+                // Tentukan apakah hari ini Jumat
+                const today = new Date();
+                const isFriday = (today.getDay() === 5); // 0=Sunday, 5=Friday
+                
                 if (action === 'masuk') {
                     // Reguler: 06:15 - 08:15 (1 jam sebelum dan sesudah 07:15)
                     if (hours < 6 || (hours === 6 && minutes < 15) || hours > 8 || (hours === 8 && minutes > 15)) {
@@ -1003,10 +920,18 @@ unset($_SESSION['error']);
                         errorMessage = 'Jam masuk reguler hanya antara 06:15 - 08:15 (1 jam sebelum dan sesudah 07:15). Waktu sekarang: ' + currentTime;
                     }
                 } else if (action === 'pulang') {
-                    // Reguler: 15:30 - 19:30 (4 jam setelah 15:30)
-                    if (hours < 14 || (hours === 14 && minutes < 30) || hours > 19 || (hours === 19 && minutes > 30)) {
-                        isValid = false;
-                        errorMessage = 'Harap perhatikan jam pulang kantor. Waktu sekarang: ' + currentTime;
+                    if (isFriday) {
+                        // Hari Jumat: 14:15 - 19:15 (1 jam sebelum 15:15 s/d 4 jam sesudahnya)
+                        if (hours < 14 || (hours === 14 && minutes < 15) || hours > 19 || (hours === 19 && minutes > 15)) {
+                            isValid = false;
+                            errorMessage = 'Jam pulang reguler hari Jumat adalah antara 14:15 - 19:15 (1 jam sebelum 15:15 s/d 4 jam sesudahnya). Waktu sekarang: ' + currentTime;
+                        }
+                    } else {
+                        // Hari selain Jumat: 14:30 - 19:30 (1 jam sebelum 15:30 s/d 4 jam sesudahnya)
+                        if (hours < 14 || (hours === 14 && minutes < 30) || hours > 19 || (hours === 19 && minutes > 30)) {
+                            isValid = false;
+                            errorMessage = 'Jam pulang reguler adalah antara 14:30 - 19:30 (1 jam sebelum 15:30 s/d 4 jam sesudahnya). Waktu sekarang: ' + currentTime;
+                        }
                     }
                 }
             }

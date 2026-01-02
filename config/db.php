@@ -1,13 +1,16 @@
 <?php
 session_start();
 
+// Include menu configuration
+require_once __DIR__ . '/menu_config.php';
+
 // SET TIMEZONE KE WIB (Asia/Jakarta)
 date_default_timezone_set('Asia/Jakarta');
 
 $host = 'localhost';
-$dbname = 'absen_kec_db';
-$username = 'absen_kec_root';
-$password = '500114899';
+$dbname = 'fgqqlzxt_absen_kec_db';
+$username = 'fgqqlzxt_absen_kec_root';
+$password = 'aLk.25474!';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
@@ -92,6 +95,84 @@ function getBatasWaktu($jabatan, $action) {
         return $action == 'masuk' ? '15:30 - 23:59' : '00:00 - 06:00';
     } else {
         return $action == 'masuk' ? 'Paling lambat 07:15' : 'Setelah 15:30';
+    }
+}
+
+// Fungsi untuk menghitung sisa cuti tahunan dengan prioritas
+function hitungSisaCutiTahunan($pdo, $id_pegawai, $jumlah_cuti_diambil) {
+    $current_year = date('Y');
+    $sisa_cuti = [
+        'tahun_dulu' => 0,
+        'tahun_lalu' => 0,
+        'tahun_sekarang' => 0
+    ];
+    
+    // Ambil sisa cuti untuk 3 tahun terakhir
+    for ($i = 2; $i >= 0; $i--) {
+        $tahun = $current_year - $i;
+        $stmt = $pdo->prepare('SELECT sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+        $stmt->execute([$id_pegawai, $tahun]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($i == 2) {
+            $sisa_cuti['tahun_dulu'] = $result ? (int)$result['sisa_cuti'] : 0;
+        } elseif ($i == 1) {
+            $sisa_cuti['tahun_lalu'] = $result ? (int)$result['sisa_cuti'] : 0;
+        } else {
+            $sisa_cuti['tahun_sekarang'] = $result ? (int)$result['sisa_cuti'] : 0;
+        }
+    }
+    
+    // Simulasi pengurangan dengan prioritas
+    $sisa_setelah_pengurangan = $sisa_cuti;
+    $sisa_yang_dipakai = $jumlah_cuti_diambil;
+    
+    // Prioritas 1: Tahun-2
+    if ($sisa_yang_dipakai > 0 && $sisa_setelah_pengurangan['tahun_dulu'] > 0) {
+        $pengurangan = min($sisa_yang_dipakai, $sisa_setelah_pengurangan['tahun_dulu']);
+        $sisa_setelah_pengurangan['tahun_dulu'] -= $pengurangan;
+        $sisa_yang_dipakai -= $pengurangan;
+    }
+    
+    // Prioritas 2: Tahun-1
+    if ($sisa_yang_dipakai > 0 && $sisa_setelah_pengurangan['tahun_lalu'] > 0) {
+        $pengurangan = min($sisa_yang_dipakai, $sisa_setelah_pengurangan['tahun_lalu']);
+        $sisa_setelah_pengurangan['tahun_lalu'] -= $pengurangan;
+        $sisa_yang_dipakai -= $pengurangan;
+    }
+    
+    // Prioritas 3: Tahun Sekarang
+    if ($sisa_yang_dipakai > 0 && $sisa_setelah_pengurangan['tahun_sekarang'] > 0) {
+        $pengurangan = min($sisa_yang_dipakai, $sisa_setelah_pengurangan['tahun_sekarang']);
+        $sisa_setelah_pengurangan['tahun_sekarang'] -= $pengurangan;
+        $sisa_yang_dipakai -= $pengurangan;
+    }
+    
+    return [
+        'sisa_sebelum' => $sisa_cuti,
+        'sisa_setelah' => $sisa_setelah_pengurangan,
+        'sisa_tidak_cukup' => $sisa_yang_dipakai > 0,
+        'sisa_yang_dipakai' => $jumlah_cuti_diambil - $sisa_yang_dipakai
+    ];
+}
+
+// Fungsi untuk update sisa cuti setelah pengambilan
+function updateSisaCutiSetelahPengambilan($pdo, $id_pegawai, $tahun, $jumlah_hari) {
+    // Cek apakah data sudah ada
+    $stmt = $pdo->prepare('SELECT id_sisa_cuti, sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($result) {
+        // Update data yang sudah ada
+        $sisa_baru = max(0, $result['sisa_cuti'] - $jumlah_hari);
+        $stmt = $pdo->prepare('UPDATE sisa_cuti_tahunan SET sisa_cuti = ? WHERE id_sisa_cuti = ?');
+        $stmt->execute([$sisa_baru, $result['id_sisa_cuti']]);
+    } else {
+        // Insert data baru dengan default 12 hari dikurangi
+        $sisa_awal = max(0, 12 - $jumlah_hari);
+        $stmt = $pdo->prepare('INSERT INTO sisa_cuti_tahunan (id_pegawai, tahun, sisa_cuti) VALUES (?, ?, ?)');
+        $stmt->execute([$id_pegawai, $tahun, $sisa_awal]);
     }
 }
 ?>

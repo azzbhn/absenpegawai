@@ -82,3 +82,105 @@ SET jumlah_hari = CASE
 
 ALTER TABLE `pegawai`
 ADD COLUMN `status` ENUM('Aktif', 'Nonaktif') NOT NULL DEFAULT 'Aktif' AFTER `username`;
+
+-- Tabel untuk menyimpan sisa cuti tahunan per tahun
+CREATE TABLE sisa_cuti_tahunan (
+    id_sisa_cuti INT PRIMARY KEY AUTO_INCREMENT,
+    id_pegawai INT NOT NULL,
+    tahun INT NOT NULL,
+    sisa_cuti INT DEFAULT 12,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_pegawai) REFERENCES pegawai(id_pegawai),
+    UNIQUE KEY unique_pegawai_tahun (id_pegawai, tahun)
+);
+
+-- Modifikasi tabel absensi untuk menyimpan jenis cuti yang lebih spesifik
+ALTER TABLE absensi 
+MODIFY COLUMN status ENUM(
+    'hadir', 
+    'izin', 
+    'sakit', 
+    'dinas luar',
+    'cuti_tahunan',
+    'cuti_sakit',
+    'cuti_alasan_penting',
+    'cuti_melahirkan',
+    'cuti_besar',
+    'cuti_luar_tanggungan'
+) DEFAULT 'hadir';
+
+-- Tabel untuk riwayat pengambilan cuti (opsional, untuk pelacakan lebih baik)
+CREATE TABLE riwayat_cuti (
+    id_riwayat INT PRIMARY KEY AUTO_INCREMENT,
+    id_pegawai INT NOT NULL,
+    jenis_cuti ENUM(
+        'tahunan',
+        'sakit',
+        'alasan_penting',
+        'melahirkan',
+        'besar',
+        'luar_tanggungan'
+    ) NOT NULL,
+    tahun_pengambilan INT NOT NULL,
+    jumlah_hari INT NOT NULL,
+    tanggal_mulai DATE NOT NULL,
+    tanggal_selesai DATE NOT NULL,
+    alasan TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_pegawai) REFERENCES pegawai(id_pegawai)
+);
+
+-- SQL untuk melengkapi database untuk input_sisacuti.php
+-- Pastikan tabel sisa_cuti_tahunan sudah ada
+
+-- Jika tabel sisa_cuti_tahunan belum ada, buat dengan perintah ini:
+CREATE TABLE IF NOT EXISTS sisa_cuti_tahunan (
+    id_sisa_cuti INT PRIMARY KEY AUTO_INCREMENT,
+    id_pegawai INT NOT NULL,
+    tahun YEAR NOT NULL,
+    sisa_cuti INT DEFAULT 0,
+    FOREIGN KEY (id_pegawai) REFERENCES pegawai(id_pegawai),
+    UNIQUE KEY unique_pegawai_tahun (id_pegawai, tahun)
+);
+
+-- Tambahkan kolom untuk tracking input cuti admin jika diperlukan
+ALTER TABLE absensi 
+ADD COLUMN IF NOT EXISTS input_by_admin BOOLEAN DEFAULT FALSE,
+ADD COLUMN IF NOT EXISTS catatan_admin TEXT;
+
+-- Buat tabel untuk log input cuti admin jika belum ada
+CREATE TABLE IF NOT EXISTS log_input_cuti (
+    id_log INT PRIMARY KEY AUTO_INCREMENT,
+    id_pegawai INT NOT NULL,
+    jenis_cuti VARCHAR(50),
+    tanggal_mulai DATE,
+    tanggal_selesai DATE,
+    jumlah_hari INT,
+    alasan TEXT,
+    input_by INT, -- id admin yang menginput
+    input_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_pegawai) REFERENCES pegawai(id_pegawai)
+);
+
+-- Tambahkan status cuti lainnya ke tabel absensi jika belum ada
+INSERT IGNORE INTO absensi (id_pegawai, tanggal, status) 
+SELECT DISTINCT id_pegawai, CURDATE(), 'cuti_alasan_penting' 
+FROM pegawai 
+WHERE 1=0;
+
+-- Buat view untuk melihat data cuti yang diinput admin
+CREATE OR REPLACE VIEW view_cuti_admin AS
+SELECT 
+    a.id_absensi,
+    p.nama,
+    p.nip,
+    a.tanggal,
+    a.status as jenis_cuti,
+    a.catatan_admin as alasan,
+    a.input_by_admin,
+    admin.nama as input_by_admin_name
+FROM absensi a
+JOIN pegawai p ON a.id_pegawai = p.id_pegawai
+LEFT JOIN pegawai admin ON a.input_by_admin = TRUE
+WHERE a.status LIKE 'cuti_%';
