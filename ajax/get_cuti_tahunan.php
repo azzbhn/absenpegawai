@@ -15,35 +15,39 @@ try {
     // Hitung tahun -1 dan tahun -2 berdasarkan tahun referensi
     $years = [$tahun_ref, $tahun_ref - 1, $tahun_ref - 2];
     
-    // Ambil data sisa cuti dari database
-    $sisa_cuti = [];
-    $stmt = $pdo->prepare('SELECT tahun, sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun IN (?, ?, ?)');
+    // Ambil data hak cuti dari database (hak_cuti_tahunan)
+    $hak_cuti = [];
+    $stmt = $pdo->prepare('SELECT tahun, hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun IN (?, ?, ?)');
     $stmt->execute([$id_pegawai, $years[0], $years[1], $years[2]]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
     foreach ($results as $row) {
-        $sisa_cuti[$row['tahun']] = (int)$row['sisa_cuti'];
+        $hak_cuti[$row['tahun']] = (int)$row['hak_cuti'];
     }
     
-    // Ambil jumlah cuti tahunan yang diambil untuk setiap tahun
-    $cuti_tahunan = [];
+    // Ambil data penggunaan cuti dari tabel penggunaan_cuti_tahunan
+    $penggunaan_cuti = [];
     foreach ($years as $tahun) {
-        $stmt = $pdo->prepare('
-            SELECT COUNT(*) as jumlah 
-            FROM absensi 
-            WHERE id_pegawai = ? 
-            AND YEAR(tanggal) = ? 
-            AND status = "cuti_tahunan"
-        ');
+        $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
         $stmt->execute([$id_pegawai, $tahun]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $cuti_tahunan[$tahun] = $result ? (int)$result['jumlah'] : 0;
+        $penggunaan_cuti[$tahun] = $result ? (int)$result['jumlah_hari'] : 0;
+    }
+    
+    // Hitung sisa cuti untuk setiap tahun
+    $sisa_cuti = [];
+    foreach ($years as $tahun) {
+        $hak = $hak_cuti[$tahun] ?? 0;
+        $penggunaan = $penggunaan_cuti[$tahun] ?? 0;
+        $sisa_cuti[$tahun] = max(0, $hak - $penggunaan);
     }
     
     echo json_encode([
         'success' => true,
-        'sisa_cuti' => $sisa_cuti,
-        'cuti_tahunan' => $cuti_tahunan
+        'hak_cuti' => $hak_cuti,        // Data hak cuti dari tabel hak_cuti_tahunan (tidak berubah)
+        'penggunaan_cuti' => $penggunaan_cuti, // Data penggunaan dari tabel penggunaan_cuti_tahunan
+        'sisa_cuti' => $sisa_cuti,      // Sisa = Hak - Penggunaan
+        'years' => $years
     ]);
     
 } catch (Exception $e) {

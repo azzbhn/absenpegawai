@@ -31,39 +31,19 @@ $jenis_cuti_map = [
     'luar_tanggungan' => 'cuti_luar_tanggungan'
 ];
 
-// Fungsi untuk mendapatkan hak cuti tahunan (dari tabel hak_cuti_tahunan)
-function getHakCutiTahunan($pdo, $id_pegawai, $tahun) {
-    $stmt = $pdo->prepare('SELECT hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
-    $stmt->execute([$id_pegawai, $tahun]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['hak_cuti'] : 0;
-}
-
-// Fungsi untuk mendapatkan penggunaan cuti tahunan
-function getPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun) {
-    $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
-    $stmt->execute([$id_pegawai, $tahun]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['jumlah_hari'] : 0;
-}
-
-// Fungsi untuk menghitung sisa cuti berdasarkan hak dan penggunaan
+// Fungsi yang sama seperti di cuti.php
 function getSisaCutiTahunan($pdo, $id_pegawai, $tahun) {
-    $hak_cuti = getHakCutiTahunan($pdo, $id_pegawai, $tahun);
-    $penggunaan = getPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun);
-    return max(0, $hak_cuti - $penggunaan);
+    $stmt = $pdo->prepare('SELECT sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? (int)$result['sisa_cuti'] : 0;
 }
 
-// Hitung cuti tahunan yang sudah diambil untuk display
+// Hitung cuti tahunan yang sudah diambil dari tabel log_input_cuti
 function getCutiTahunanDiambil($pdo, $id_pegawai, $tahun) {
-    // Prioritaskan dari tabel penggunaan_cuti_tahunan
-    $penggunaan = getPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun);
-    if ($penggunaan > 0) {
-        return $penggunaan;
-    }
-    
-    // Fallback: hitung dari tabel log_input_cuti jika ada
+    // Pertama, coba ambil dari tabel log_input_cuti (jika tabel ada)
     try {
+        // Cek apakah tabel log_input_cuti ada
         $table_check = $pdo->query("SHOW TABLES LIKE 'log_input_cuti'");
         if ($table_check->rowCount() > 0) {
             $stmt = $pdo->prepare('
@@ -81,10 +61,21 @@ function getCutiTahunanDiambil($pdo, $id_pegawai, $tahun) {
             }
         }
     } catch (Exception $e) {
+        // Jika error, lanjutkan ke metode fallback
         error_log("Error getting cuti from log_input_cuti: " . $e->getMessage());
     }
     
-    return 0;
+    // Fallback: hitung dari tabel absensi (metode lama)
+    $stmt = $pdo->prepare('
+        SELECT COUNT(*) as total 
+        FROM absensi 
+        WHERE id_pegawai = ? 
+        AND YEAR(tanggal) = ? 
+        AND status = "cuti_tahunan"
+    ');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? (int)$result['total'] : 0;
 }
 
 function getCutiByJenisAllYears($pdo, $id_pegawai, $jenis_cuti) {
@@ -262,43 +253,45 @@ $detail_riwayat_cuti_aktif = getDetailRiwayatCutiByYear($pdo, $user['id_pegawai'
 
 // Render content berdasarkan tab
 if ($tab == 'tahunan') {
-    // Get data cuti tahunan untuk 3 tahun terakhir dengan sistem baru
+    // Get data cuti tahunan untuk 3 tahun terakhir
     $cuti_tahunan = [
         'tahun_sekarang' => [
             'tahun' => $current_year,
-            'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year),
-            'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year),
-            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year)
+            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year),
+            'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year)
         ],
         'tahun_lalu' => [
             'tahun' => $current_year - 1,
-            'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
-            'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
-            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1)
+            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
+            'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year - 1)
         ],
         'tahun_dulu' => [
             'tahun' => $current_year - 2,
-            'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
-            'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
-            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2)
+            'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
+            'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year - 2)
         ]
     ];
     
-    // Hitung total untuk statistik
-    // Total Hak Cuti = Hak Cuti tahun ini + Hak Cuti tahun-1 + Hak Cuti tahun-2 (dari tabel hak_cuti_tahunan)
-    $total_hak_cuti = $cuti_tahunan['tahun_sekarang']['hak'] + 
-                     $cuti_tahunan['tahun_lalu']['hak'] + 
-                     $cuti_tahunan['tahun_dulu']['hak'];
+    // Hitung hak cuti
+    foreach ($cuti_tahunan as $key => &$cuti) {
+        $cuti['hak_cuti'] = $cuti['sisa'] + $cuti['diambil'];
+    }
     
-    // Total Penggunaan Cuti Tahun Ini = Penggunaan cuti tahun ini saja (dari tabel penggunaan_cuti_tahunan)
-    $total_penggunaan_tahun_ini = $cuti_tahunan['tahun_sekarang']['penggunaan'];
+    // Hitung total untuk statistik (hanya tahun ini)
+    // Total Sisa Cuti = Sisa Cuti tahun ini + Sisa Cuti tahun-1 + Sisa Cuti tahun-2
+    $total_sisa_cuti = $cuti_tahunan['tahun_sekarang']['sisa'] + 
+                       $cuti_tahunan['tahun_lalu']['sisa'] + 
+                       $cuti_tahunan['tahun_dulu']['sisa'];
     
-    // Persentase Penggunaan Cuti = (Total Penggunaan Tahun Ini / Total Hak Cuti 3 Tahun) × 100%
-    $total_persentase = $total_hak_cuti > 0 ? ($total_penggunaan_tahun_ini / $total_hak_cuti * 100) : 0;
+    // Total Cuti Diambil = Cuti yang diambil pada tahun ini saja
+    $total_cuti_diambil = $cuti_tahunan['tahun_sekarang']['diambil'];
+    
+    // Persentase Penggunaan Cuti = (Total Cuti Diambil / Total Sisa Cuti) × 100%
+    $total_persentase = $total_sisa_cuti > 0 ? ($total_cuti_diambil / $total_sisa_cuti * 100) : 0;
     
     // Persentase penggunaan cuti tahun ini (dari hak cuti tahun ini saja)
-    $persentase_tahun_ini = $cuti_tahunan['tahun_sekarang']['hak'] > 0 ? 
-                            ($cuti_tahunan['tahun_sekarang']['penggunaan'] / $cuti_tahunan['tahun_sekarang']['hak'] * 100) : 0;
+    $persentase_tahun_ini = $cuti_tahunan['tahun_sekarang']['hak_cuti'] > 0 ? 
+                            ($cuti_tahunan['tahun_sekarang']['diambil'] / $cuti_tahunan['tahun_sekarang']['hak_cuti'] * 100) : 0;
 
     
     // Render HTML untuk tab tahunan
@@ -317,20 +310,18 @@ if ($tab == 'tahunan') {
             </div>
             <div class="space-y-3">
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Hak Cuti:</span>
-                    <span class="font-bold text-lg text-blue-600">
-                        <?= $cuti_tahunan['tahun_sekarang']['hak'] ?> hari
-                    </span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Sudah Digunakan:</span>
-                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_sekarang']['penggunaan'] ?> hari</span>
-                </div>
-                <div class="flex justify-between">
                     <span class="text-gray-600">Sisa Cuti:</span>
                     <span class="font-bold text-lg <?= $cuti_tahunan['tahun_sekarang']['sisa'] > 0 ? 'text-green-600' : 'text-red-600' ?>">
                         <?= $cuti_tahunan['tahun_sekarang']['sisa'] ?> hari
                     </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Sudah Diambil:</span>
+                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_sekarang']['diambil'] ?> hari</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Hak Cuti:</span>
+                    <span class="font-bold text-blue-600"><?= $cuti_tahunan['tahun_sekarang']['hak_cuti'] ?> hari</span>
                 </div>
             </div>
         </div>
@@ -345,20 +336,18 @@ if ($tab == 'tahunan') {
             </div>
             <div class="space-y-3">
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Hak Cuti:</span>
-                    <span class="font-bold text-lg text-blue-600">
-                        <?= $cuti_tahunan['tahun_lalu']['hak'] ?> hari
-                    </span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Sudah Digunakan:</span>
-                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_lalu']['penggunaan'] ?> hari</span>
-                </div>
-                <div class="flex justify-between">
                     <span class="text-gray-600">Sisa Cuti:</span>
                     <span class="font-bold text-lg <?= $cuti_tahunan['tahun_lalu']['sisa'] > 0 ? 'text-green-600' : 'text-red-600' ?>">
                         <?= $cuti_tahunan['tahun_lalu']['sisa'] ?> hari
                     </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Sudah Diambil:</span>
+                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_lalu']['diambil'] ?> hari</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Hak Cuti:</span>
+                    <span class="font-bold text-blue-600"><?= $cuti_tahunan['tahun_lalu']['hak_cuti'] ?> hari</span>
                 </div>
             </div>
         </div>
@@ -373,20 +362,18 @@ if ($tab == 'tahunan') {
             </div>
             <div class="space-y-3">
                 <div class="flex justify-between">
-                    <span class="text-gray-600">Hak Cuti:</span>
-                    <span class="font-bold text-lg text-blue-600">
-                        <?= $cuti_tahunan['tahun_dulu']['hak'] ?> hari
-                    </span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-600">Sudah Digunakan:</span>
-                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_dulu']['penggunaan'] ?> hari</span>
-                </div>
-                <div class="flex justify-between">
                     <span class="text-gray-600">Sisa Cuti:</span>
                     <span class="font-bold text-lg <?= $cuti_tahunan['tahun_dulu']['sisa'] > 0 ? 'text-green-600' : 'text-red-600' ?>">
                         <?= $cuti_tahunan['tahun_dulu']['sisa'] ?> hari
                     </span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Sudah Diambil:</span>
+                    <span class="font-bold text-orange-600"><?= $cuti_tahunan['tahun_dulu']['diambil'] ?> hari</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Hak Cuti:</span>
+                    <span class="font-bold text-blue-600"><?= $cuti_tahunan['tahun_dulu']['hak_cuti'] ?> hari</span>
                 </div>
             </div>
         </div>
@@ -397,30 +384,34 @@ if ($tab == 'tahunan') {
         <div class="cuti-card bg-white rounded-xl shadow-lg p-6 border border-gray-200 stat-card md:col-span-2">
             <h4 class="font-bold text-lg text-gray-800 mb-4">Statistik Penggunaan Cuti</h4>
             <div class="space-y-6">
-                <!-- Baris 1: Total Hak Cuti dan Total Penggunaan Cuti Tahun Ini -->
+                <!-- Baris 1: Total Sisa Cuti dan Total Cuti Diambil -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Total Hak Cuti (Hak Cuti 3 Tahun) -->
+                    <!-- Total Sisa Cuti (Sisa Cuti 3 Tahun) -->
                     <div class="bg-blue-50 p-4 rounded-lg">
                         <div class="text-center">
-                            <h5 class="font-bold text-lg text-blue-800 mb-2">Total Hak Cuti</h5>
-                            <div class="text-5xl font-bold text-blue-600 mb-2"><?= $total_hak_cuti ?></div>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <p>Hak cuti dari 3 tahun terakhir</p>
-                                <p>(<?= $cuti_tahunan['tahun_sekarang']['tahun'] ?>: <?= $cuti_tahunan['tahun_sekarang']['hak'] ?> + 
-                                   <?= $cuti_tahunan['tahun_lalu']['tahun'] ?>: <?= $cuti_tahunan['tahun_lalu']['hak'] ?> + 
-                                   <?= $cuti_tahunan['tahun_dulu']['tahun'] ?>: <?= $cuti_tahunan['tahun_dulu']['hak'] ?>)</p>
+                            <h5 class="font-bold text-lg text-blue-800 mb-2">Total Sisa Cuti</h5>
+                            <div class="text-5xl font-bold text-blue-600 mb-4"><?= $total_sisa_cuti ?></div>
+                            <div class="text-xs text-gray-600 space-y-1">
+                                <div>Tahun <?= $cuti_tahunan['tahun_sekarang']['tahun'] ?>: 
+                                    <span class="font-semibold"><?= $cuti_tahunan['tahun_sekarang']['sisa'] ?> hari</span>
+                                </div>
+                                <div>Tahun <?= $cuti_tahunan['tahun_lalu']['tahun'] ?>: 
+                                    <span class="font-semibold"><?= $cuti_tahunan['tahun_lalu']['sisa'] ?> hari</span>
+                                </div>
+                                <div>Tahun <?= $cuti_tahunan['tahun_dulu']['tahun'] ?>: 
+                                    <span class="font-semibold"><?= $cuti_tahunan['tahun_dulu']['sisa'] ?> hari</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Total Penggunaan Cuti Tahun Ini -->
+                    <!-- Total Cuti Diambil (Hanya Tahun Ini) -->
                     <div class="bg-orange-50 p-4 rounded-lg">
                         <div class="text-center">
-                            <h5 class="font-bold text-lg text-orange-800 mb-2">Penggunaan Cuti Tahun <?= $current_year ?></h5>
-                            <div class="text-5xl font-bold text-orange-600"><?= $total_penggunaan_tahun_ini ?></div>
-                            <div class="text-sm text-gray-600 space-y-1">
-                                <p>hari digunakan pada tahun <?= $current_year ?></p>
-                            </div>
+                            <h5 class="font-bold text-lg text-orange-800 mb-2">Total Cuti Diambil</h5>
+                            <div class="text-5xl font-bold text-orange-600"><?= $total_cuti_diambil ?></div>
+                            <p class="text-gray-600 text-sm mt-4">Cuti Diambil Tahun <?= $current_year ?></p>
+                            <p class="text-xs text-gray-500 mt-1">(dihitung dari inputan Admin)</p>
                         </div>
                     </div>
                     
@@ -430,11 +421,11 @@ if ($tab == 'tahunan') {
                 <div class="bg-white rounded-xl p-4 border border-gray-200">
                     <h5 class="font-bold text-gray-800 mb-3">Persentase Penggunaan Cuti</h5>
                     
-                    <!-- Progress Bar Utama: (Total Penggunaan Tahun Ini / Total Hak Cuti 3 Tahun) -->
+                    <!-- Progress Bar Utama: (Total Cuti Diambil Tahun Ini / Total Sisa Cuti 3 Tahun) -->
                     <div class="mb-6">
                         <div class="flex justify-between items-center mb-1">
                             <div>
-                                <span class="text-sm text-gray-600">Penggunaan Cuti Tahun <?= $current_year ?> dari Total Hak Cuti 3 Tahun</span>
+                                <span class="text-sm text-gray-600">Penggunaan Cuti Tahun <?= $current_year ?> dari Total Sisa Cuti 3 Tahun</span>
                                 <span class="ml-2 text-sm font-bold text-orange-600"><?= number_format($total_persentase, 1) ?>%</span>
                             </div>
                             <span class="text-xs font-bold <?= $total_persentase > 20 ? 'text-red-600' : ($total_persentase > 10 ? 'text-yellow-600' : 'text-green-600') ?>">
@@ -453,11 +444,11 @@ if ($tab == 'tahunan') {
                             <span>40%+</span>
                         </div>
                         <p class="text-xs text-gray-500 mt-2">
-                            Rumus: (<?= $total_penggunaan_tahun_ini ?> hari / <?= $total_hak_cuti ?> hari) × 100% = <?= number_format($total_persentase, 1) ?>%
+                            Rumus: (<?= $total_cuti_diambil ?> hari / <?= $total_sisa_cuti ?> hari) × 100% = <?= number_format($total_persentase, 1) ?>%
                         </p>
                     </div>
                     
-                    <!-- Progress Bar untuk Penggunaan Cuti Tahun Ini dari Hak Cuti Tahun Ini -->
+                    <!-- Progress Bar untuk Penggunaan Cuti Tahun Ini -->
                     <div>
                         <div class="flex justify-between items-center mb-1">
                             <div>

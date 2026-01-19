@@ -12,7 +12,7 @@ $error = '';
 
 // --- FUNGSI LOGIKA DATABASE ---
 
-// 1. Fungsi Hapus/Revert Cuti (Disesuaikan untuk menerima durasi lama agar akurat saat revert)
+// 1. Fungsi Hapus/Revert Cuti (Disesuaikan untuk sistem baru)
 function revertCuti($pdo, $id_pegawai, $tgl_mulai, $tgl_selesai, $jenis_cuti, $lama_lama = null) {
     // Jika durasi lama tidak dikirim, hitung manual (fallback)
     if ($lama_lama === null) {
@@ -27,17 +27,63 @@ function revertCuti($pdo, $id_pegawai, $tgl_mulai, $tgl_selesai, $jenis_cuti, $l
     $stmt = $pdo->prepare("DELETE FROM absensi WHERE id_pegawai = ? AND status = ? AND tanggal BETWEEN ? AND ?");
     $stmt->execute([$id_pegawai, $jenis_cuti, $tgl_mulai, $tgl_selesai]);
 
-    // Jika cuti tahunan, kembalikan saldo
+    // Jika cuti tahunan, kembalikan penggunaan di tabel penggunaan_cuti_tahunan
     if ($jenis_cuti == 'cuti_tahunan') {
-        $tahun = date('Y', strtotime($tgl_mulai));
-        $stmt = $pdo->prepare("SELECT id_sisa_cuti, sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?");
-        $stmt->execute([$id_pegawai, $tahun]);
-        $quota = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($quota) {
-            $new_quota = min(12, $quota['sisa_cuti'] + $days);
-            $update = $pdo->prepare("UPDATE sisa_cuti_tahunan SET sisa_cuti = ? WHERE id_sisa_cuti = ?");
-            $update->execute([$new_quota, $quota['id_sisa_cuti']]);
+        $tahun_pengambilan = date('Y', strtotime($tgl_mulai));
+        
+        // Cari log untuk mendapatkan alokasi tahun hak
+        try {
+            $stmt = $pdo->prepare("
+                SELECT tahun_hak 
+                FROM log_input_cuti 
+                WHERE id_pegawai = ? 
+                AND tanggal_mulai = ? 
+                AND jenis_cuti = ?
+                ORDER BY id_log DESC 
+                LIMIT 1
+            ");
+            $stmt->execute([$id_pegawai, $tgl_mulai, $jenis_cuti]);
+            $log = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($log && $log['tahun_hak']) {
+                $tahun_hak_array = explode(',', $log['tahun_hak']);
+                
+                // Untuk setiap tahun hak yang digunakan, kurangi penggunaan
+                foreach ($tahun_hak_array as $tahun_hak) {
+                    // Cari penggunaan untuk tahun ini
+                    $stmt = $pdo->prepare('
+                        SELECT id_penggunaan, jumlah_hari 
+                        FROM penggunaan_cuti_tahunan 
+                        WHERE id_pegawai = ? AND tahun = ?
+                    ');
+                    $stmt->execute([$id_pegawai, $tahun_hak]);
+                    $penggunaan = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($penggunaan) {
+                        // Kurangi penggunaan (asumsi rata-rata per tahun)
+                        $hari_per_tahun = ceil($days / count($tahun_hak_array));
+                        $penggunaan_baru = max(0, $penggunaan['jumlah_hari'] - $hari_per_tahun);
+                        
+                        if ($penggunaan_baru > 0) {
+                            $stmt = $pdo->prepare('
+                                UPDATE penggunaan_cuti_tahunan 
+                                SET jumlah_hari = ? 
+                                WHERE id_penggunaan = ?
+                            ');
+                            $stmt->execute([$penggunaan_baru, $penggunaan['id_penggunaan']]);
+                        } else {
+                            // Hapus jika penggunaan menjadi 0
+                            $stmt = $pdo->prepare('
+                                DELETE FROM penggunaan_cuti_tahunan 
+                                WHERE id_penggunaan = ?
+                            ');
+                            $stmt->execute([$penggunaan['id_penggunaan']]);
+                        }
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            error_log("Error reverting penggunaan cuti: " . $e->getMessage());
         }
     }
 }
@@ -80,6 +126,113 @@ function getDurasiIntervensi($pdo, $id_pegawai, $tanggal_mulai, $jenis_cuti) {
     return null;
 }
 
+// Fungsi untuk menghitung alokasi pengambilan cuti tahunan (sama seperti di input_cuti.php)
+function hitungAlokasiCutiTahunan($pdo, $id_pegawai, $jumlah_hari, $tahun_pengambilan) {
+    $alokasi = [
+        'tahun_ini' => 0,
+        'tahun_lalu' => 0,
+        'tahun_dulu' => 0
+    ];
+    
+    $sisa_hari = $jumlah_hari;
+    
+    // 1. Ambil dari hak cuti tahun ini terlebih dahulu
+    $stmt = $pdo->prepare('SELECT hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun_pengambilan]);
+    $hak_tahun_ini = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($hak_tahun_ini) {
+        // Hitung penggunaan yang sudah ada untuk tahun ini
+        $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+        $stmt->execute([$id_pegawai, $tahun_pengambilan]);
+        $penggunaan_tahun_ini = $stmt->fetch(PDO::FETCH_ASSOC);
+        $penggunaan_sekarang = $penggunaan_tahun_ini ? (int)$penggunaan_tahun_ini['jumlah_hari'] : 0;
+        
+        // Hitung sisa yang benar-benar tersedia
+        $sisa_tersedia = max(0, $hak_tahun_ini['sisa_cuti'] - $penggunaan_sekarang);
+        $ambil_dari_tahun_ini = min($sisa_tersedia, $sisa_hari);
+        
+        if ($ambil_dari_tahun_ini > 0) {
+            $alokasi['tahun_ini'] = $ambil_dari_tahun_ini;
+            $sisa_hari -= $ambil_dari_tahun_ini;
+        }
+    }
+    
+    // 2. Jika masih ada sisa, ambil dari tahun lalu
+    if ($sisa_hari > 0) {
+        $stmt = $pdo->prepare('SELECT hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+        $stmt->execute([$id_pegawai, $tahun_pengambilan - 1]);
+        $hak_tahun_lalu = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($hak_tahun_lalu) {
+            // Hitung penggunaan yang sudah ada untuk tahun lalu
+            $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+            $stmt->execute([$id_pegawai, $tahun_pengambilan - 1]);
+            $penggunaan_tahun_lalu = $stmt->fetch(PDO::FETCH_ASSOC);
+            $penggunaan_sekarang = $penggunaan_tahun_lalu ? (int)$penggunaan_tahun_lalu['jumlah_hari'] : 0;
+            
+            // Hitung sisa yang benar-benar tersedia
+            $sisa_tersedia = max(0, $hak_tahun_lalu['sisa_cuti'] - $penggunaan_sekarang);
+            $ambil_dari_tahun_lalu = min($sisa_tersedia, $sisa_hari);
+            
+            if ($ambil_dari_tahun_lalu > 0) {
+                $alokasi['tahun_lalu'] = $ambil_dari_tahun_lalu;
+                $sisa_hari -= $ambil_dari_tahun_lalu;
+            }
+        }
+    }
+    
+    // 3. Jika masih ada sisa, ambil dari tahun dulu
+    if ($sisa_hari > 0) {
+        $stmt = $pdo->prepare('SELECT hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+        $stmt->execute([$id_pegawai, $tahun_pengambilan - 2]);
+        $hak_tahun_dulu = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($hak_tahun_dulu) {
+            // Hitung penggunaan yang sudah ada untuk tahun dulu
+            $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+            $stmt->execute([$id_pegawai, $tahun_pengambilan - 2]);
+            $penggunaan_tahun_dulu = $stmt->fetch(PDO::FETCH_ASSOC);
+            $penggunaan_sekarang = $penggunaan_tahun_dulu ? (int)$penggunaan_tahun_dulu['jumlah_hari'] : 0;
+            
+            // Hitung sisa yang benar-benar tersedia
+            $sisa_tersedia = max(0, $hak_tahun_dulu['sisa_cuti'] - $penggunaan_sekarang);
+            $ambil_dari_tahun_dulu = min($sisa_tersedia, $sisa_hari);
+            
+            if ($ambil_dari_tahun_dulu > 0) {
+                $alokasi['tahun_dulu'] = $ambil_dari_tahun_dulu;
+                $sisa_hari -= $ambil_dari_tahun_dulu;
+            }
+        }
+    }
+    
+    // Jika masih ada sisa yang tidak teralokasi, lempar error
+    if ($sisa_hari > 0) {
+        throw new Exception("Tidak cukup hak cuti yang tersedia. Sisa yang perlu dialokasikan: $sisa_hari hari");
+    }
+    
+    return $alokasi;
+}
+
+// Fungsi untuk mencatat penggunaan cuti tahunan
+function catatPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun, $jumlah_hari) {
+    // Cek apakah sudah ada data untuk tahun ini
+    $stmt = $pdo->prepare('SELECT id_penggunaan, jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if ($existing) {
+        // Update data yang ada
+        $new_total = $existing['jumlah_hari'] + $jumlah_hari;
+        $stmt = $pdo->prepare('UPDATE penggunaan_cuti_tahunan SET jumlah_hari = ? WHERE id_penggunaan = ?');
+        $stmt->execute([$new_total, $existing['id_penggunaan']]);
+    } else {
+        // Insert data baru
+        $stmt = $pdo->prepare('INSERT INTO penggunaan_cuti_tahunan (id_pegawai, tahun, jumlah_hari) VALUES (?, ?, ?)');
+        $stmt->execute([$id_pegawai, $tahun, $jumlah_hari]);
+    }
+}
+
 // --- HANDLE POST REQUESTS ---
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -120,17 +273,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $new_start = $_POST['tanggal_mulai'];
             $new_end = $_POST['tanggal_selesai'];
             $new_alasan = $_POST['alasan'];
-            $lama_cuti_baru = (int)$_POST['lama_cuti']; // Hasil intervensi Admin
+            $lama_cuti_baru = (int)$_POST['lama_cuti'];
+            $tahun_pengambilan = date('Y', strtotime($new_start));
 
             // Validasi input
             if ($lama_cuti_baru < 1) {
                 throw new Exception("Lama cuti minimal 1 hari!");
             }
 
-            // 1. Hapus Data Lama & Revert Saldo
+            // 1. Hapus Data Lama & Revert Penggunaan
             revertCuti($pdo, $id_pegawai, $old_start, $old_end, $old_jenis, $old_lama);
 
-            // 2. Persiapkan Rentang Tanggal Absensi (menggunakan fungsi dari db.php)
+            // 2. Persiapkan Rentang Tanggal Absensi
             $dates = [];
             $current = strtotime($new_start);
             $last = strtotime($new_end);
@@ -156,47 +310,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->execute([$id_pegawai, $tanggal, $new_jenis, $new_alasan]);
             }
 
-            // 5. Potong Saldo (Gunakan $lama_cuti_baru hasil intervensi)
+            // 5. Jika cuti tahunan, catat penggunaan dengan alokasi baru
             if ($new_jenis == 'cuti_tahunan') {
-                $tahun = date('Y', strtotime($new_start));
-                $stmt = $pdo->prepare("SELECT id_sisa_cuti, sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?");
-                $stmt->execute([$id_pegawai, $tahun]);
-                $quota = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if ($quota) {
-                    $sisa_baru = max(0, $quota['sisa_cuti'] - $lama_cuti_baru);
-                    $update = $pdo->prepare("UPDATE sisa_cuti_tahunan SET sisa_cuti = ? WHERE id_sisa_cuti = ?");
-                    $update->execute([$sisa_baru, $quota['id_sisa_cuti']]);
-                } else {
-                    $sisa_awal = max(0, 12 - $lama_cuti_baru);
-                    $pdo->prepare("INSERT INTO sisa_cuti_tahunan (id_pegawai, tahun, sisa_cuti) VALUES (?, ?, ?)")
-                        ->execute([$id_pegawai, $tahun, $sisa_awal]);
-                }
-            }
-
-            // 6. Update log input cuti
-            try {
-                // Hapus log lama
-                $stmt = $pdo->prepare("DELETE FROM log_input_cuti WHERE id_pegawai = ? AND tanggal_mulai = ? AND jenis_cuti = ?");
-                $stmt->execute([$id_pegawai, $old_start, $old_jenis]);
+                // Hitung alokasi pengambilan cuti
+                $alokasi = hitungAlokasiCutiTahunan($pdo, $id_pegawai, $lama_cuti_baru, $tahun_pengambilan);
                 
-                // Insert log baru
-                $stmt = $pdo->prepare("
-                    INSERT INTO log_input_cuti (id_pegawai, jenis_cuti, tanggal_mulai, tanggal_selesai, jumlah_hari, alasan, input_by)
-                    VALUES (?, ?, ?, ?, ?, ?, ?)
-                ");
-                $stmt->execute([
-                    $id_pegawai, 
-                    $new_jenis, 
-                    $new_start, 
-                    $new_end, 
-                    $lama_cuti_baru, 
-                    $new_alasan, 
-                    $_SESSION['user']['id_pegawai']
-                ]);
-            } catch (Exception $e) {
-                // Log error tanpa mengganggu proses utama
-                error_log("Error updating log: " . $e->getMessage());
+                // Catat penggunaan untuk setiap tahun
+                if ($alokasi['tahun_ini'] > 0) {
+                    catatPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun_pengambilan, $alokasi['tahun_ini']);
+                }
+                if ($alokasi['tahun_lalu'] > 0) {
+                    catatPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun_pengambilan - 1, $alokasi['tahun_lalu']);
+                }
+                if ($alokasi['tahun_dulu'] > 0) {
+                    catatPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun_pengambilan - 2, $alokasi['tahun_dulu']);
+                }
+                
+                // Update log input cuti dengan informasi alokasi
+                try {
+                    // Hapus log lama
+                    $stmt = $pdo->prepare("DELETE FROM log_input_cuti WHERE id_pegawai = ? AND tanggal_mulai = ? AND jenis_cuti = ?");
+                    $stmt->execute([$id_pegawai, $old_start, $old_jenis]);
+                    
+                    // Buat string tahun hak yang digunakan
+                    $tahun_hak_used = [];
+                    if ($alokasi['tahun_ini'] > 0) $tahun_hak_used[] = $tahun_pengambilan;
+                    if ($alokasi['tahun_lalu'] > 0) $tahun_hak_used[] = $tahun_pengambilan - 1;
+                    if ($alokasi['tahun_dulu'] > 0) $tahun_hak_used[] = $tahun_pengambilan - 2;
+                    
+                    $tahun_hak_str = !empty($tahun_hak_used) ? implode(',', $tahun_hak_used) : '';
+                    
+                    // Insert log baru
+                    $stmt = $pdo->prepare("
+                        INSERT INTO log_input_cuti (id_pegawai, jenis_cuti, tanggal_mulai, tanggal_selesai, jumlah_hari, tahun_hak, alasan, input_by)
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $id_pegawai, 
+                        $new_jenis, 
+                        $new_start, 
+                        $new_end, 
+                        $lama_cuti_baru, 
+                        $tahun_hak_str,
+                        $new_alasan, 
+                        $_SESSION['user']['id_pegawai']
+                    ]);
+                } catch (Exception $e) {
+                    // Log error tanpa mengganggu proses utama
+                    error_log("Error updating log: " . $e->getMessage());
+                }
+            } else {
+                // Untuk cuti non-tahunan, update log biasa
+                try {
+                    // Hapus log lama
+                    $stmt = $pdo->prepare("DELETE FROM log_input_cuti WHERE id_pegawai = ? AND tanggal_mulai = ? AND jenis_cuti = ?");
+                    $stmt->execute([$id_pegawai, $old_start, $old_jenis]);
+                    
+                    // Insert log baru
+                    $stmt = $pdo->prepare("
+                        INSERT INTO log_input_cuti (id_pegawai, jenis_cuti, tanggal_mulai, tanggal_selesai, jumlah_hari, alasan, input_by)
+                        VALUES (?, ?, ?, ?, ?, ?, ?)
+                    ");
+                    $stmt->execute([
+                        $id_pegawai, 
+                        $new_jenis, 
+                        $new_start, 
+                        $new_end, 
+                        $lama_cuti_baru, 
+                        $new_alasan, 
+                        $_SESSION['user']['id_pegawai']
+                    ]);
+                } catch (Exception $e) {
+                    error_log("Error updating log: " . $e->getMessage());
+                }
             }
 
             $pdo->commit();
@@ -695,7 +881,7 @@ $jenis_cuti_labels = [
         function confirmDelete(id, start, end, jenis, lama) {
             Swal.fire({
                 title: 'Hapus Data?',
-                text: "Saldo cuti akan dikembalikan sejumlah " + lama + " hari.",
+                text: "Data cuti akan dihapus dan penggunaan cuti tahunan akan dikembalikan.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',

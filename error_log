@@ -70,3 +70,770 @@ Stack trace:
 [02-Jan-2026 10:20:46 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 514
 [02-Jan-2026 10:21:22 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 514
 [02-Jan-2026 10:27:52 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 514
+[04-Jan-2026 07:55:18 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/cuti.php:27
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(27): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(88): getHakCutiTahunan(Object(PDO), 8, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/cuti.php on line 27
+[04-Jan-2026 07:56:36 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/cuti.php:27
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(27): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(88): getHakCutiTahunan(Object(PDO), 8, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/cuti.php on line 27
+[04-Jan-2026 08:04:25 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/cuti.php:27
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(27): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(88): getHakCutiTahunan(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/cuti.php on line 27
+[04-Jan-2026 08:04:40 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:29
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(29): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(215): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 29
+[04-Jan-2026 08:04:48 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[04-Jan-2026 08:05:02 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/cuti.php:27
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(27): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(88): getHakCutiTahunan(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/cuti.php on line 27
+[04-Jan-2026 08:05:39 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[04-Jan-2026 08:06:04 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[04-Jan-2026 08:08:39 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/cuti.php:27
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(27): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/cuti.php(88): getHakCutiTahunan(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/cuti.php on line 27
+[04-Jan-2026 08:13:41 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 152
+[04-Jan-2026 08:13:41 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 175
+[04-Jan-2026 08:13:41 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 199
+[04-Jan-2026 08:14:57 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 152
+[04-Jan-2026 08:14:57 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 175
+[04-Jan-2026 08:14:57 Asia/Jakarta] PHP Warning:  Undefined array key "sisa_cuti" in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 199
+[04-Jan-2026 09:14:24 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[04-Jan-2026 09:14:43 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[04-Jan-2026 09:24:17 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:29
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(29): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(215): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 29
+[04-Jan-2026 09:24:36 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:29
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(29): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(215): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 29
+[04-Jan-2026 09:29:21 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:29
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(29): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(215): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 29
+[04-Jan-2026 09:35:38 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:30
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(30): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(250): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 30
+[04-Jan-2026 09:35:52 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:30
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(30): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(250): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 30
+[04-Jan-2026 09:36:28 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:30
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(30): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(250): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 30
+[04-Jan-2026 09:36:30 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php:30
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(30): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php(250): getHakCutiByTahun(Object(PDO), 1, '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/edit_sisacuti.php on line 30
+[04-Jan-2026 09:43:00 Asia/Jakarta] Jumlah pegawai aktif: 24
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:43:00 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Jumlah pegawai aktif: 24
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:44:05 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'fgqqlzxt_absen_kec_db.sisa_cuti_tahunan' doesn't exist
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:53 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:57 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:49:59 Asia/Jakarta] Error getHakCutiByTahun: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'jumlah_hari' in 'SELECT'
+[04-Jan-2026 09:51:24 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/edit_cuti.php on line 700
+[15-Jan-2026 07:15:44 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '19', 'cuti_tahunan', '2025')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:15:46 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '19', 'cuti_tahunan', '2025')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:15:52 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '19', 'cuti_tahunan', '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:15:52 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '8', 'cuti_tahunan', '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:15:53 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '17', 'cuti_tahunan', '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:15:54 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(220): getDetailCutiFromLogInput(Object(PDO), '14', 'cuti_tahunan', '2026')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:16:07 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(213): getDetailCutiFromLogInput(Object(PDO), '19', 'cuti_tahunan', 'all')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:16:56 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(213): getDetailCutiFromLogInput(Object(PDO), '21', 'cuti_tahunan', 'all')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 07:17:52 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'keterangan' in 'SELECT' in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php:151
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(151): PDOStatement->execute(Array)
+#1 /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php(213): getDetailCutiFromLogInput(Object(PDO), '19', 'cuti_tahunan', 'all')
+#2 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/data_cuti_pegawai.php on line 151
+[15-Jan-2026 12:01:42 Asia/Jakarta] File database config tidak ditemukan
+[15-Jan-2026 12:01:46 Asia/Jakarta] File database config tidak ditemukan
+[15-Jan-2026 05:03:03 UTC] File database config tidak ditemukan
+[15-Jan-2026 05:03:12 UTC] File database config tidak ditemukan
+[15-Jan-2026 05:03:17 UTC] File database config tidak ditemukan
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 26
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 39
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 56
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Warning:  Undefined array key "nip" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:04:48 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token ";", expecting "]" in /home/fgqqlzxt/absen.ajb.my.id/components/header.php on line 198
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 26
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 39
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 56
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Warning:  Undefined array key "nip" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:04:51 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token ";", expecting "]" in /home/fgqqlzxt/absen.ajb.my.id/components/header.php on line 198
+[15-Jan-2026 12:05:34 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 26
+[15-Jan-2026 12:05:34 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 39
+[15-Jan-2026 12:05:34 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 56
+[15-Jan-2026 12:05:34 Asia/Jakarta] PHP Warning:  Undefined array key "nip" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:05:34 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:05:34 Asia/Jakarta] File database config tidak ditemukan
+[15-Jan-2026 12:10:10 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 26
+[15-Jan-2026 12:10:10 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 39
+[15-Jan-2026 12:10:10 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 56
+[15-Jan-2026 12:10:10 Asia/Jakarta] PHP Warning:  Undefined array key "nip" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:10:10 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:10:15 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 26
+[15-Jan-2026 12:10:15 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 39
+[15-Jan-2026 12:10:15 Asia/Jakarta] PHP Warning:  Undefined array key "id_pegawai" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 56
+[15-Jan-2026 12:10:15 Asia/Jakarta] PHP Warning:  Undefined array key "nip" in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[15-Jan-2026 12:10:15 Asia/Jakarta] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in /home/fgqqlzxt/absen.ajb.my.id/dashboard.php on line 72
+[17-Jan-2026 17:16:39 Asia/Jakarta] PHP Warning:  require_once(config/database.php): Failed to open stream: No such file or directory in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php on line 149
+[17-Jan-2026 17:16:39 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required 'config/database.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php:149
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/dashboard.php(193): include()
+#1 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php on line 149
+[17-Jan-2026 17:22:19 Asia/Jakarta] PHP Warning:  require_once(config/database.php): Failed to open stream: No such file or directory in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php on line 149
+[17-Jan-2026 17:22:19 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Failed opening required 'config/database.php' (include_path='.:/opt/cpanel/ea-php83/root/usr/share/pear') in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php:149
+Stack trace:
+#0 /home/fgqqlzxt/absen.ajb.my.id/dashboard.php(193): include()
+#1 {main}
+  thrown in /home/fgqqlzxt/absen.ajb.my.id/components/navigation.php on line 149

@@ -21,92 +21,66 @@ if (!in_array($active_tab, $valid_tabs)) {
 // Parameter filter tahun - default untuk tab tahunan adalah tahun berjalan, untuk tab lain adalah 'all'
 $tahun_filter = $_GET['tahun'] ?? ($active_tab == 'tahunan' ? $current_year : 'all');
 
-// Fungsi untuk mendapatkan sisa cuti tahunan
+// Fungsi untuk mendapatkan hak cuti tahunan (dari tabel hak_cuti_tahunan - tidak berubah)
+function getHakCutiTahunan($pdo, $id_pegawai, $tahun) {
+    $stmt = $pdo->prepare('SELECT hak_cuti FROM hak_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? (int)$result['hak_cuti'] : 0;
+}
+
+// Fungsi untuk mendapatkan penggunaan cuti tahunan (dari tabel penggunaan_cuti_tahunan)
+function getPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun) {
+    $stmt = $pdo->prepare('SELECT jumlah_hari FROM penggunaan_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
+    $stmt->execute([$id_pegawai, $tahun]);
+    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $result ? (int)$result['jumlah_hari'] : 0;
+}
+
+// Fungsi untuk menghitung sisa cuti berdasarkan hak dan penggunaan
 function getSisaCutiTahunan($pdo, $id_pegawai, $tahun) {
-    $stmt = $pdo->prepare('SELECT sisa_cuti FROM sisa_cuti_tahunan WHERE id_pegawai = ? AND tahun = ?');
-    $stmt->execute([$id_pegawai, $tahun]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['sisa_cuti'] : 0;
-}
-
-// Hitung cuti tahunan yang sudah diambil
-function getCutiTahunanDiambil($pdo, $id_pegawai, $tahun) {
-    $stmt = $pdo->prepare('
-        SELECT COUNT(*) as total 
-        FROM absensi 
-        WHERE id_pegawai = ? 
-        AND YEAR(tanggal) = ? 
-        AND status = "cuti_tahunan"
-    ');
-    $stmt->execute([$id_pegawai, $tahun]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['total'] : 0;
-}
-
-// Hitung cuti sesuai jenis (semua tahun)
-function getCutiByJenisAllYears($pdo, $id_pegawai, $jenis_cuti) {
-    $sql = '
-        SELECT COUNT(*) as total 
-        FROM absensi 
-        WHERE id_pegawai = ? 
-        AND status = ?
-    ';
-    
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$id_pegawai, $jenis_cuti]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['total'] : 0;
-}
-
-// Hitung cuti sesuai jenis dan tahun tertentu
-function getCutiByJenisPerTahun($pdo, $id_pegawai, $jenis_cuti, $tahun) {
-    $stmt = $pdo->prepare('
-        SELECT COUNT(*) as total 
-        FROM absensi 
-        WHERE id_pegawai = ? 
-        AND YEAR(tanggal) = ? 
-        AND status = ?
-    ');
-    $stmt->execute([$id_pegawai, $tahun, $jenis_cuti]);
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result ? (int)$result['total'] : 0;
+    $hak_cuti = getHakCutiTahunan($pdo, $id_pegawai, $tahun);
+    $penggunaan = getPenggunaanCutiTahunan($pdo, $id_pegawai, $tahun);
+    return max(0, $hak_cuti - $penggunaan);
 }
 
 // Get data cuti tahunan untuk 3 tahun terakhir
 $cuti_tahunan = [
     'tahun_sekarang' => [
         'tahun' => $current_year,
-        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year),
-        'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year)
+        'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year),
+        'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year),
+        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year)
     ],
     'tahun_lalu' => [
         'tahun' => $current_year - 1,
-        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
-        'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year - 1)
+        'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
+        'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1),
+        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 1)
     ],
     'tahun_dulu' => [
         'tahun' => $current_year - 2,
-        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
-        'diambil' => getCutiTahunanDiambil($pdo, $user['id_pegawai'], $current_year - 2)
+        'hak' => getHakCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
+        'penggunaan' => getPenggunaanCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2),
+        'sisa' => getSisaCutiTahunan($pdo, $user['id_pegawai'], $current_year - 2)
     ]
 ];
 
-// Hitung hak cuti (sisa + diambil) untuk setiap tahun
-foreach ($cuti_tahunan as $key => &$cuti) {
-    $cuti['hak_cuti'] = $cuti['sisa'] + $cuti['diambil'];
-    $cuti['persentase'] = $cuti['diambil'] > 0 ? min(100, ($cuti['diambil'] / $cuti['hak_cuti'] * 100)) : 0;
-}
-
 // Hitung total untuk statistik
-$total_hak_cuti = $cuti_tahunan['tahun_sekarang']['hak_cuti'] + 
-                  $cuti_tahunan['tahun_lalu']['hak_cuti'] + 
-                  $cuti_tahunan['tahun_dulu']['hak_cuti'];
+// Total Hak Cuti = Hak Cuti tahun ini + Hak Cuti tahun-1 + Hak Cuti tahun-2 (dari tabel hak_cuti_tahunan)
+$total_hak_cuti = $cuti_tahunan['tahun_sekarang']['hak'] + 
+                  $cuti_tahunan['tahun_lalu']['hak'] + 
+                  $cuti_tahunan['tahun_dulu']['hak'];
 
-$total_cuti_diambil = $cuti_tahunan['tahun_sekarang']['diambil'] + 
-                      $cuti_tahunan['tahun_lalu']['diambil'] + 
-                      $cuti_tahunan['tahun_dulu']['diambil'];
+// Total Penggunaan Cuti Tahun Ini = Penggunaan cuti tahun ini saja
+$total_penggunaan_tahun_ini = $cuti_tahunan['tahun_sekarang']['penggunaan'];
 
-$total_persentase = $total_hak_cuti > 0 ? ($total_cuti_diambil / $total_hak_cuti * 100) : 0;
+// Persentase Penggunaan Cuti = (Total Penggunaan Tahun Ini / Total Hak Cuti 3 Tahun) × 100%
+$total_persentase = $total_hak_cuti > 0 ? ($total_penggunaan_tahun_ini / $total_hak_cuti * 100) : 0;
+
+// Persentase penggunaan cuti tahun ini (dari hak cuti tahun ini saja)
+$persentase_tahun_ini = $cuti_tahunan['tahun_sekarang']['hak'] > 0 ? 
+                        ($cuti_tahunan['tahun_sekarang']['penggunaan'] / $cuti_tahunan['tahun_sekarang']['hak'] * 100) : 0;
 
 // Get detail riwayat cuti untuk semua jenis dengan filter tahun
 function getDetailRiwayatCutiByYear($pdo, $id_pegawai, $jenis_cuti, $tahun_filter = 'all') {
@@ -292,7 +266,7 @@ if (isset($jenis_cuti_map[$active_tab])) {
         <!-- Header -->
         <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
             <h2 class="text-2xl font-bold text-gray-800 mb-2">Kendali Cuti Pegawai</h2>
-            <p class="text-gray-600">Monitor dan kelola cuti Anda dengan mudah</p>
+            <p class="text-gray-600">Monitor dan kelola hak cuti Anda dengan mudah</p>
         </div>
 
         <!-- Tabs Navigation -->

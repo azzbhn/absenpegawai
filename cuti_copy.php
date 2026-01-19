@@ -29,8 +29,33 @@ function getSisaCutiTahunan($pdo, $id_pegawai, $tahun) {
     return $result ? (int)$result['sisa_cuti'] : 0;
 }
 
-// Hitung cuti tahunan yang sudah diambil
+// Hitung cuti tahunan yang sudah diambil dari tabel log_input_cuti
 function getCutiTahunanDiambil($pdo, $id_pegawai, $tahun) {
+    // Pertama, coba ambil dari tabel log_input_cuti (jika tabel ada)
+    try {
+        // Cek apakah tabel log_input_cuti ada
+        $table_check = $pdo->query("SHOW TABLES LIKE 'log_input_cuti'");
+        if ($table_check->rowCount() > 0) {
+            $stmt = $pdo->prepare('
+                SELECT SUM(jumlah_hari) as total 
+                FROM log_input_cuti 
+                WHERE id_pegawai = ? 
+                AND jenis_cuti = "cuti_tahunan"
+                AND YEAR(tanggal_mulai) = ?
+            ');
+            $stmt->execute([$id_pegawai, $tahun]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result && $result['total'] !== null) {
+                return (int)$result['total'];
+            }
+        }
+    } catch (Exception $e) {
+        // Jika error, lanjutkan ke metode fallback
+        error_log("Error getting cuti from log_input_cuti: " . $e->getMessage());
+    }
+    
+    // Fallback: hitung dari tabel absensi (metode lama)
     $stmt = $pdo->prepare('
         SELECT COUNT(*) as total 
         FROM absensi 
@@ -43,8 +68,30 @@ function getCutiTahunanDiambil($pdo, $id_pegawai, $tahun) {
     return $result ? (int)$result['total'] : 0;
 }
 
-// Hitung cuti sesuai jenis (semua tahun)
+// Hitung cuti sesuai jenis (semua tahun) - untuk tab lainnya
 function getCutiByJenisAllYears($pdo, $id_pegawai, $jenis_cuti) {
+    // Untuk cuti selain tahunan, gunakan tabel log_input_cuti jika tersedia
+    try {
+        $table_check = $pdo->query("SHOW TABLES LIKE 'log_input_cuti'");
+        if ($table_check->rowCount() > 0) {
+            $stmt = $pdo->prepare('
+                SELECT SUM(jumlah_hari) as total 
+                FROM log_input_cuti 
+                WHERE id_pegawai = ? 
+                AND jenis_cuti = ?
+            ');
+            $stmt->execute([$id_pegawai, $jenis_cuti]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result && $result['total'] !== null) {
+                return (int)$result['total'];
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Error getting cuti from log_input_cuti: " . $e->getMessage());
+    }
+    
+    // Fallback ke metode lama
     $sql = '
         SELECT COUNT(*) as total 
         FROM absensi 
@@ -58,8 +105,31 @@ function getCutiByJenisAllYears($pdo, $id_pegawai, $jenis_cuti) {
     return $result ? (int)$result['total'] : 0;
 }
 
-// Hitung cuti sesuai jenis dan tahun tertentu
+// Hitung cuti sesuai jenis dan tahun tertentu - untuk tab lainnya
 function getCutiByJenisPerTahun($pdo, $id_pegawai, $jenis_cuti, $tahun) {
+    // Gunakan tabel log_input_cuti jika tersedia
+    try {
+        $table_check = $pdo->query("SHOW TABLES LIKE 'log_input_cuti'");
+        if ($table_check->rowCount() > 0) {
+            $stmt = $pdo->prepare('
+                SELECT SUM(jumlah_hari) as total 
+                FROM log_input_cuti 
+                WHERE id_pegawai = ? 
+                AND jenis_cuti = ?
+                AND YEAR(tanggal_mulai) = ?
+            ');
+            $stmt->execute([$id_pegawai, $jenis_cuti, $tahun]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result && $result['total'] !== null) {
+                return (int)$result['total'];
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Error getting cuti from log_input_cuti: " . $e->getMessage());
+    }
+    
+    // Fallback ke metode lama
     $stmt = $pdo->prepare('
         SELECT COUNT(*) as total 
         FROM absensi 
@@ -98,17 +168,23 @@ foreach ($cuti_tahunan as $key => &$cuti) {
 }
 
 // Hitung total untuk statistik
-$total_hak_cuti = $cuti_tahunan['tahun_sekarang']['hak_cuti'] + 
-                  $cuti_tahunan['tahun_lalu']['hak_cuti'] + 
-                  $cuti_tahunan['tahun_dulu']['hak_cuti'];
+// Total Sisa Cuti = Sisa Cuti tahun ini + Sisa Cuti tahun-1 + Sisa Cuti tahun-2
+$total_sisa_cuti = $cuti_tahunan['tahun_sekarang']['sisa'] + 
+                  $cuti_tahunan['tahun_lalu']['sisa'] + 
+                  $cuti_tahunan['tahun_dulu']['sisa'];
 
-$total_cuti_diambil = $cuti_tahunan['tahun_sekarang']['diambil'] + 
-                      $cuti_tahunan['tahun_lalu']['diambil'] + 
-                      $cuti_tahunan['tahun_dulu']['diambil'];
+// Total Cuti Diambil = Cuti yang diambil pada tahun ini saja (dari log_input_cuti)
+$total_cuti_diambil = $cuti_tahunan['tahun_sekarang']['diambil'];
 
-$total_persentase = $total_hak_cuti > 0 ? ($total_cuti_diambil / $total_hak_cuti * 100) : 0;
+// Persentase Penggunaan Cuti = (Total Cuti Diambil / Total Sisa Cuti) × 100%
+$total_persentase = $total_sisa_cuti > 0 ? ($total_cuti_diambil / $total_sisa_cuti * 100) : 0;
+
+// Persentase penggunaan cuti tahun ini (dari hak cuti tahun ini saja)
+$persentase_tahun_ini = $cuti_tahunan['tahun_sekarang']['hak_cuti'] > 0 ? 
+                        ($cuti_tahunan['tahun_sekarang']['diambil'] / $cuti_tahunan['tahun_sekarang']['hak_cuti'] * 100) : 0;
 
 // Get detail riwayat cuti untuk semua jenis dengan filter tahun
+// Fungsi ini tetap menggunakan tabel absensi untuk riwayat tampilan
 function getDetailRiwayatCutiByYear($pdo, $id_pegawai, $jenis_cuti, $tahun_filter = 'all') {
     $sql = '
         SELECT 

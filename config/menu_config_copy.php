@@ -244,28 +244,6 @@ class MenuConfig {
                 'order' => 70
             ],
             
-            // ====== MENU TAMBAHAN UNTUK ADMIN ======
-            [
-                'id' => 'edit_cuti',
-                'title' => 'Edit Cuti',
-                'icon' => 'edit-3',
-                'url' => 'edit_cuti.php',
-                'roles' => ['Administrator'],
-                'position' => 'main',
-                'parent_id' => 'admin',
-                'order' => 25
-            ],
-            [
-                'id' => 'daftar_cuti',
-                'title' => 'Daftar Cuti',
-                'icon' => 'list',
-                'url' => 'list_cuti.php',
-                'roles' => ['Administrator'],
-                'position' => 'main',
-                'parent_id' => 'admin',
-                'order' => 35
-            ],
-            
             // =================== RIGHT ALIGNED MENU ===================
             [
                 'id' => 'ganti_password',
@@ -340,7 +318,7 @@ class MenuConfig {
                 'url' => 'input_cuti.php',
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
-                'order' => 55
+                'order' => 55  // Letakkan di antara Data Absensi dan Persetujuan Cuti
             ],
             [
                 'id' => 'mobile_admin_persetujuan_cuti',
@@ -352,31 +330,13 @@ class MenuConfig {
                 'order' => 60
             ],
             [
-                'id' => 'mobile_admin_edit_cuti',
-                'title' => 'Edit Cuti',
-                'icon' => 'edit-3',
-                'url' => 'edit_cuti.php',
-                'roles' => ['Administrator'],
-                'position' => 'mobile-only',
-                'order' => 62
-            ],
-            [
-                'id' => 'mobile_admin_daftar_cuti',
-                'title' => 'Daftar Cuti',
-                'icon' => 'list',
-                'url' => 'list_cuti.php',
-                'roles' => ['Administrator'],
-                'position' => 'mobile-only',
-                'order' => 64
-            ],
-            [
                 'id' => 'mobile_admin_tambah_pegawai',
                 'title' => 'Tambah Pegawai',
                 'icon' => 'user-plus',
                 'url' => 'tambah_pegawai.php',
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
-                'order' => 66
+                'order' => 70
             ],
             [
                 'id' => 'mobile_admin_data_pegawai',
@@ -385,7 +345,7 @@ class MenuConfig {
                 'url' => 'data_pegawai.php',
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
-                'order' => 68
+                'order' => 80
             ],
             [
                 'id' => 'mobile_admin_input_sisa_cuti',
@@ -394,7 +354,7 @@ class MenuConfig {
                 'url' => 'input_sisacuti.php',
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
-                'order' => 70
+                'order' => 90
             ],
             [
                 'id' => 'mobile_admin_edit_sisa_cuti',
@@ -403,16 +363,7 @@ class MenuConfig {
                 'url' => 'edit_sisacuti.php',
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
-                'order' => 72
-            ],
-            [
-                'id' => 'mobile_admin_data_cuti_pegawai',
-                'title' => 'Data Cuti Pegawai',
-                'icon' => 'database',
-                'url' => 'data_cuti_pegawai.php',
-                'roles' => ['Administrator'],
-                'position' => 'mobile-only',
-                'order' => 74
+                'order' => 100
             ],
             [
                 'id' => 'mobile_ganti_password',

@@ -29,8 +29,6 @@ function getMenuColor($menuTitle) {
         'Data Absensi' => 'bg-gradient-to-r from-purple-500 to-violet-400 hover:from-purple-600 hover:to-violet-500 shadow-purple-500/30',
         'Input Cuti' => 'bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 shadow-amber-500/30',
         'Persetujuan Cuti' => 'bg-gradient-to-r from-green-500 to-emerald-400 hover:from-green-600 hover:to-emerald-500 shadow-green-500/30',
-        'Edit Cuti' => 'bg-gradient-to-r from-cyan-500 to-blue-400 hover:from-cyan-600 hover:to-blue-500 shadow-cyan-500/30',
-        'Daftar Cuti' => 'bg-gradient-to-r from-amber-500 to-orange-400 hover:from-amber-600 hover:to-orange-500 shadow-amber-500/30',
         'Tambah Pegawai' => 'bg-gradient-to-r from-pink-500 to-rose-400 hover:from-pink-600 hover:to-rose-500 shadow-pink-500/30',
         'Data Pegawai' => 'bg-gradient-to-r from-indigo-500 to-blue-400 hover:from-indigo-600 hover:to-blue-500 shadow-indigo-500/30',
         'Input Sisa Cuti Tahunan' => 'bg-gradient-to-r from-teal-500 to-emerald-400 hover:from-teal-600 hover:to-emerald-500 shadow-teal-500/30',
@@ -218,9 +216,9 @@ try {
     <div class="container mx-auto px-4 relative">
         <div class="flex items-center justify-center md:justify-start">
             <!-- Badge info -->
-            <div class="bg-gradient-to-r from-yellow-400 to-amber-400 text-blue-900 font-bold px-4 py-2 rounded-full mr-4 animate-pulse shadow-lg flex items-center space-x-2">
+            <div class="bg-gradient-to-r from-yellow-400 to-amber-400 text-blue-900 font-bold px-2 py-2 rounded-full mr-2 animate-pulse shadow-lg flex items-center space-x-2">
                 <i data-feather="bell" class="w-4 h-4"></i>
-                <span class="text-sm">INFO SERAGAM</span>
+                <span class="text-sm">SERAGAM</span>
             </div>
             
             <!-- Running text container -->
