@@ -126,6 +126,10 @@ ob_start(function($buffer) {
             align-items: center;
             justify-content: center;
         }
+        @media print {
+            .no-print { display: none !important; }
+            th:last-child, td:last-child { display: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -140,15 +144,38 @@ ob_start(function($buffer) {
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center bg-white rounded-2xl shadow-lg p-6 mb-8">
+        <div class="flex flex-col md:flex-row md:justify-between items-start md:items-center bg-white rounded-2xl shadow-lg p-6 mb-8 space-y-4 md:space-y-0">
             <div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Data Seluruh Pegawai</h2>
                 <p class="text-gray-600">Daftar semua pegawai yang terdaftar dalam sistem.</p>
             </div>
-            <a href="tambah_pegawai.php" class="bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-3 px-5 rounded-lg transition duration-200 flex items-center space-x-2">
-                <i data-feather="user-plus"></i>
-                <span>Tambah Pegawai</span>
-            </a>
+            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-3">
+                <a href="tambah_pegawai.php" class="bg-[#F9B000] hover:bg-[#e6a000] text-white font-bold py-3 px-5 rounded-lg transition duration-200 flex items-center space-x-2 no-print">
+                    <i data-feather="user-plus"></i>
+                    <span>Tambah Pegawai</span>
+                </a>
+                <button onclick="window.print()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-5 rounded-lg transition duration-200 flex items-center space-x-2 no-print">
+                    <i data-feather="printer"></i>
+                    <span>Print</span>
+                </button>
+            </div>
+        </div>
+        <!-- filter -->
+        <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 no-print">
+            <form id="filterForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="filterNama" class="block text-sm font-medium text-gray-700">Nama</label>
+                    <input type="text" id="filterNama" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#F9B000] focus:border-[#F9B000]" placeholder="Cari nama...">
+                </div>
+                <div>
+                    <label for="filterNIP" class="block text-sm font-medium text-gray-700">NIP</label>
+                    <input type="text" id="filterNIP" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#F9B000] focus:border-[#F9B000]" placeholder="Cari nip...">
+                </div>
+                <div>
+                    <label for="filterJabatan" class="block text-sm font-medium text-gray-700">Jabatan</label>
+                    <input type="text" id="filterJabatan" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-[#F9B000] focus:border-[#F9B000]" placeholder="Cari jabatan...">
+                </div>
+            </form>
         </div>
 
         <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -225,6 +252,30 @@ ob_start(function($buffer) {
 
     <script>
         feather.replace();
+
+        // filter functionality
+        function applyFilters() {
+            const nama = document.getElementById('filterNama').value.toLowerCase();
+            const nip = document.getElementById('filterNIP').value.toLowerCase();
+            const jabatan = document.getElementById('filterJabatan').value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const cNama = row.cells[1].textContent.toLowerCase();
+                const cNip = row.cells[2].textContent.toLowerCase();
+                const cJab = row.cells[3].textContent.toLowerCase();
+                if ((nama === '' || cNama.includes(nama)) &&
+                    (nip === '' || cNip.includes(nip)) &&
+                    (jabatan === '' || cJab.includes(jabatan))) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        document.getElementById('filterNama').addEventListener('input', applyFilters);
+        document.getElementById('filterNIP').addEventListener('input', applyFilters);
+        document.getElementById('filterJabatan').addEventListener('input', applyFilters);
 
         function toggleStatus(id, nama, status) {
             const action = status === 'Aktif' ? 'menonaktifkan' : 'mengaktifkan';

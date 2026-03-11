@@ -1,5 +1,9 @@
 <?php
 require_once 'config/db.php';
+require_once 'config/jam_kerja.php';
+
+// pastikan tabel jam kerja ada dan baris default terisi
+ensureWorkHoursTable($pdo);
 
 if (!isset($_SESSION['user']) || $_SESSION['user']['jabatan'] != 'Administrator') {
     header('Location: index.php');
@@ -154,28 +158,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </form>
 
-                <!-- Informasi Jam Kerja Berdasarkan Jabatan -->
+                <!-- Informasi Jam Kerja Berdasarkan Konfigurasi -->
+                <?php
+                    // ambil jam kerja dari database untuk tampil
+                    $wj = getWorkHours($pdo, 'reguler');
+                    $wjj = getWorkHours($pdo, 'reguler_jumat');
+                    $wm = getWorkHours($pdo, 'malam');
+                ?>
                 <div class="mt-8 p-6 bg-blue-50 rounded-lg border border-blue-200">
                     <h4 class="font-semibold text-blue-800 mb-3">Informasi Jam Kerja:</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-white p-4 rounded-lg">
-                            <h5 class="font-semibold text-green-700 mb-2">Pegawai Reguler</h5>
+                            <h5 class="font-semibold text-green-700 mb-2">Pegawai Reguler (Senin-Kamis)</h5>
                             <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Jam Masuk: 06:15 - 08:15</li>
-                                <li>• (1 jam sebelum & sesudah 07:15)</li>
-                                <li>• Jam Pulang: 15:30 - 19:30</li>
-                                <li>• (4 jam setelah 15:30)</li>
-                                <li>• Shift: Pagi/Siang</li>
+                                <li>• Jam Masuk: <?= htmlspecialchars(substr($wj['masuk_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($wj['masuk_selesai'],0,5) ?? '-') ?></li>
+                                <li>• Jam Pulang: <?= htmlspecialchars(substr($wj['pulang_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($wj['pulang_selesai'],0,5) ?? '-') ?></li>
                             </ul>
                         </div>
                         <div class="bg-white p-4 rounded-lg">
-                            <h5 class="font-semibold text-blue-700 mb-2">Jaga Malam</h5>
+                            <h5 class="font-semibold text-blue-700 mb-2">Pegawai Jaga Malam</h5>
                             <ul class="text-sm text-gray-600 space-y-1">
-                                <li>• Jam Masuk: 14:30 - 16:30</li>
-                                <li>• (1 jam sebelum & sesudah 15:30)</li>
-                                <li>• Jam Pulang: 00:00 - 10:00</li>
-                                <li>• (4 jam setelah 06:00)</li>
-                                <li>• Shift: Malam</li>
+                                <li>• Jam Masuk: <?= htmlspecialchars(substr($wm['masuk_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($wm['masuk_selesai'],0,5) ?? '-') ?></li>
+                                <li>• Jam Pulang: <?= htmlspecialchars(substr($wm['pulang_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($wm['pulang_selesai'],0,5) ?? '-') ?></li>
                             </ul>
                         </div>
                     </div>

@@ -1,5 +1,9 @@
 <?php
 require_once 'config/db.php';
+require_once 'config/jam_kerja.php';
+
+// pastikan tabel jam kerja terbuat
+ensureWorkHoursTable($pdo);
 
 if (!isset($_SESSION['user']) || $_SESSION['user']['jabatan'] != 'Administrator') {
     header('Location: index.php');
@@ -197,29 +201,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </form>
 
                 <!-- Informasi Jam Kerja -->
-                <div class="mt-8 p-6 <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'bg-blue-50' : 'bg-green-50' ?> rounded-lg border <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'border-blue-200' : 'border-green-200' ?>">
-                    <h4 class="font-semibold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-800' : 'text-green-800' ?> mb-3">Informasi Jam Kerja Saat Ini:</h4>
+                <?php
+                    // pilih konfigurasi berdasarkan jabatan dan hari
+                    $is_jaga = ($pegawai['jabatan'] == 'Jaga Malam');
+                    $is_friday = (date('N') == 5);
+                    if ($is_jaga) {
+                        $conf = getWorkHours($pdo, 'malam');
+                    } else {
+                        $conf = $is_friday ? getWorkHours($pdo, 'reguler_jumat') : getWorkHours($pdo, 'reguler');
+                    }
+                ?>
+                <div class="mt-8 p-6 <?= $is_jaga ? 'bg-blue-50' : 'bg-green-50' ?> rounded-lg border <?= $is_jaga ? 'border-blue-200' : 'border-green-200' ?>">
+                    <h4 class="font-semibold <?= $is_jaga ? 'text-blue-800' : 'text-green-800' ?> mb-3">Informasi Jam Kerja Saat Ini:</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div class="bg-white p-4 rounded-lg">
                             <h5 class="font-semibold text-gray-700 mb-1">Jam Masuk</h5>
-                            <p class="text-lg font-bold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-600' : 'text-green-600' ?>">
-                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '14:30 - 16:30' : '06:15 - 08:15' ?>
-                            </p>
-                            <p class="text-sm <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-500' : 'text-green-500' ?>">
-                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '(1 jam sebelum & sesudah 15:30)' : '(1 jam sebelum & sesudah 07:15)' ?>
+                            <p class="text-lg font-bold <?= $is_jaga ? 'text-blue-600' : 'text-green-600' ?>">
+                                <?= htmlspecialchars(substr($conf['masuk_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($conf['masuk_selesai'],0,5) ?? '-') ?>
                             </p>
                         </div>
                         <div class="bg-white p-4 rounded-lg">
                             <h5 class="font-semibold text-gray-700 mb-1">Jam Pulang</h5>
-                            <p class="text-lg font-bold <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-600' : 'text-green-600' ?>">
-                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '00:00 - 10:00' : '15:30 - 19:30' ?>
-                            </p>
-                            <p class="text-sm <?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-500' : 'text-green-500' ?>">
-                                <?= $pegawai['jabatan'] == 'Jaga Malam' ? '(4 jam setelah 06:00)' : '(4 jam setelah 15:30)' ?>
+                            <p class="text-lg font-bold <?= $is_jaga ? 'text-blue-600' : 'text-green-600' ?>">
+                                <?= htmlspecialchars(substr($conf['pulang_mulai'],0,5) ?? '-') ?> - <?= htmlspecialchars(substr($conf['pulang_selesai'],0,5) ?? '-') ?>
                             </p>
                         </div>
                     </div>
-                    <p class="<?= $pegawai['jabatan'] == 'Jaga Malam' ? 'text-blue-700' : 'text-green-700' ?> text-sm mt-3">
+                    <p class="<?= $is_jaga ? 'text-blue-700' : 'text-green-700' ?> text-sm mt-3">
                         <i data-feather="info" class="w-4 h-4 inline mr-1"></i>
                         <strong>Fleksibilitas:</strong> Absen masuk 1 jam sebelum & sesudah waktu, Absen pulang 4 jam setelah waktu.
                     </p>

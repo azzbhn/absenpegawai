@@ -214,6 +214,16 @@ class MenuConfig {
                 'order' => 40
             ],
             [
+                'id' => 'jam_kerja',
+                'title' => 'Jam Kerja',
+                'icon' => 'clock',
+                'url' => 'jam_kerja.php',
+                'roles' => ['Administrator'],
+                'position' => 'main',
+                'parent_id' => 'admin',
+                'order' => 45
+            ],
+            [
                 'id' => 'input_sisa_cuti',
                 'title' => 'Input Sisa Cuti Tahunan',
                 'icon' => 'plus-circle',
@@ -386,6 +396,15 @@ class MenuConfig {
                 'roles' => ['Administrator'],
                 'position' => 'mobile-only',
                 'order' => 68
+            ],
+            [
+                'id' => 'mobile_admin_jam_kerja',
+                'title' => 'Jam Kerja',
+                'icon' => 'clock',
+                'url' => 'jam_kerja.php',
+                'roles' => ['Administrator'],
+                'position' => 'mobile-only',
+                'order' => 69
             ],
             [
                 'id' => 'mobile_admin_input_sisa_cuti',

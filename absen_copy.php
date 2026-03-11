@@ -1,5 +1,6 @@
 <?php
 require_once 'config/db.php';
+require_once 'config/jam_kerja.php';
 
 if (!isset($_SESSION['user'])) {
     header('Location: index.php');
@@ -10,6 +11,14 @@ $user = $_SESSION['user'];
 
 // Tentukan apakah user adalah Jaga Malam
 $is_jaga_malam = ($user['jabatan'] == 'Jaga Malam');
+
+// pastikan tabel jam kerja ada
+ensureWorkHoursTable($pdo);
+
+$is_friday = (date('N') == 5);
+$shift_key = $is_jaga_malam ? 'malam' : ($is_friday ? 'reguler_jumat' : 'reguler');
+$shift_label = $is_jaga_malam ? 'Jaga Malam' : 'Pegawai Reguler';
+$work_hours = getWorkHours($pdo, $shift_key);
 
 // Koordinat kantor
 $kantor_lat = KANTOR_LAT;
@@ -74,64 +83,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $waktu_sekarang = date('H:i:s');
             $jam_sekarang = date('H:i', strtotime($waktu_sekarang));
             
-            if ($is_jaga_malam) {
-                // Validasi untuk Jaga Malam dengan fleksibilitas baru
-                if ($action == 'masuk') {
-                    // Jaga Malam: masuk 14:30 - 18:30 (1 jam sebelum dan sesudah 15:30)
-                    // TAPI tidak boleh di jam 00:00 - 10:00 (waktu pulang)
-                    if ($jam_sekarang >= '00:00' && $jam_sekarang <= '10:00') {
-                        $_SESSION['error'] = 'Jam masuk untuk Jaga Malam adalah antara 14:30 - 18:30. Saat ini adalah waktu pulang (00:00-10:00). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
-                    }
-                    if ($jam_sekarang < '14:30' || $jam_sekarang > '18:30') {
-                        $_SESSION['error'] = 'Jam masuk untuk Jaga Malam adalah antara 14:30 - 18:30 (1 jam sebelum dan sesudah 15:30). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
-                    }
-                } elseif ($action == 'pulang') {
-                    // Jaga Malam: pulang 00:00 - 10:00 (4 jam setelah 06:00)
-                    // Tidak boleh di jam 14:30 - 18:30 (waktu masuk)
-                    if ($jam_sekarang >= '14:30' && $jam_sekarang <= '18:30') {
-                        $_SESSION['error'] = 'Jam pulang untuk Jaga Malam adalah antara 00:00 - 10:00. Saat ini adalah waktu masuk (14:30-18:30). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
-                    }
-                    if (!(($jam_sekarang >= '00:00' && $jam_sekarang <= '10:00') || 
-                          ($jam_sekarang > '18:30' && $jam_sekarang <= '23:59'))) {
-                        $_SESSION['error'] = 'Jam pulang untuk Jaga Malam adalah antara 00:00 - 10:00 (4 jam setelah 06:00). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
-                    }
+            // validasi berdasarkan konfigurasi jam kerja
+            if ($action == 'masuk') {
+                if (!$work_hours || $jam_sekarang < substr($work_hours['masuk_mulai'],0,5) || $jam_sekarang > substr($work_hours['masuk_selesai'],0,5)) {
+                    $_SESSION['error'] = "Jam masuk untuk $shift_label adalah antara "
+                        . (isset($work_hours['masuk_mulai']) ? substr($work_hours['masuk_mulai'],0,5) : '-')
+                        . " - " . (isset($work_hours['masuk_selesai']) ? substr($work_hours['masuk_selesai'],0,5) : '-')
+                        . ". Waktu sekarang: " . $jam_sekarang;
+                    header('Location: absen.php');
+                    exit;
                 }
-            } else {
-                // Validasi untuk pegawai reguler dengan fleksibilitas baru untuk masuk
-                if ($action == 'masuk') {
-                    // Reguler: masuk bisa 1 jam sebelum 07:15 (06:15) sampai 1 jam setelah 07:15 (08:15)
-                    if ($jam_sekarang < '06:15' || $jam_sekarang > '08:15') {
-                        $_SESSION['error'] = 'Jam masuk untuk pegawai reguler adalah antara 06:15 - 08:15 (1 jam sebelum dan sesudah 07:15). Waktu sekarang: ' . $jam_sekarang;
-                        header('Location: absen.php');
-                        exit;
-                    }
-                } elseif ($action == 'pulang') {
-                    // PERBAIKAN: Kebijakan baru ditambah 1 jam sebelumnya
-                    // Reguler: pulang 15:30 (atau 15:15 Jumat) dikurangi 1 jam, sampai 4 jam setelahnya.
-                    
-                    if ($is_friday) {
-                        // Hari Jumat: 14:15 - 19:15 (15:15 minus 1 jam s/d 15:15 plus 4 jam)
-                        if ($jam_sekarang < '14:15' || $jam_sekarang > '19:15') {
-                            $_SESSION['error'] = 'Jam pulang untuk pegawai reguler hari Jumat adalah antara 14:15 - 19:15 (1 jam sebelum 15:15 s/d 4 jam sesudahnya). Waktu sekarang: ' . $jam_sekarang;
-                            header('Location: absen.php');
-                            exit;
-                        }
-                    } else {
-                        // Hari selain Jumat: 14:30 - 19:30 (15:30 minus 1 jam s/d 15:30 plus 4 jam)
-                        if ($jam_sekarang < '14:30' || $jam_sekarang > '19:30') {
-                            $_SESSION['error'] = 'Jam pulang untuk pegawai reguler adalah antara 14:30 - 19:30 (1 jam sebelum 15:30 s/d 4 jam sesudahnya). Waktu sekarang: ' . $jam_sekarang;
-                            header('Location: absen.php');
-                            exit;
-                        }
-                    }
+            } elseif ($action == 'pulang') {
+                if (!$work_hours || $jam_sekarang < substr($work_hours['pulang_mulai'],0,5) || $jam_sekarang > substr($work_hours['pulang_selesai'],0,5)) {
+                    $_SESSION['error'] = "Jam pulang untuk $shift_label adalah antara "
+                        . (isset($work_hours['pulang_mulai']) ? substr($work_hours['pulang_mulai'],0,5) : '-')
+                        . " - " . (isset($work_hours['pulang_selesai']) ? substr($work_hours['pulang_selesai'],0,5) : '-')
+                        . ". Waktu sekarang: " . $jam_sekarang;
+                    header('Location: absen.php');
+                    exit;
                 }
             }
             
