@@ -491,6 +491,8 @@ if ($id_pegawai_filter && $pegawai_selected) {
             </div>
         <?php endif; ?>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

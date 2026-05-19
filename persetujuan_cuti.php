@@ -409,7 +409,7 @@ ob_start(function($buffer) {
         Kembali
         </a>
     </main>
-
+    <?php include 'footer.php'; ?>
     <script>
       const menuToggle = document.getElementById('menu-toggle');
       const menu = document.getElementById('menu');

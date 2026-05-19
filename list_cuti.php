@@ -401,6 +401,8 @@ foreach ($cuti_data as $cuti) {
             <?php endif; ?>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         feather.replace();

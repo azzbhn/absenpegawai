@@ -471,6 +471,8 @@ ob_start(function($buffer) {
             </div>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         feather.replace();

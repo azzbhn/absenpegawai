@@ -812,6 +812,8 @@ $jenis_cuti_labels = [
         <input type="hidden" name="old_jenis" id="del_old_jenis">
         <input type="hidden" name="old_lama" id="del_old_lama">
     </form>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         // Inisialisasi feather icons

@@ -261,7 +261,7 @@ ob_start(function($buffer) {
                 <p class="text-gray-600 text-sm">
                     Sistem Absensi Berbasis Lokasi GPS
                 </p>
-                <p class="text-gray-400 text-xs mt-1">© <?php echo date("Y"); ?> Kecamatan Ajibarang</p>
+                <p class="text-gray-400 text-xs mt-1">© <?php echo date("Y"); ?> Kecamatan Ajibarang &middot; Powered by <span class="font-bold">Kurtepalk</span></p>
             </div>
         </div>
     </div>

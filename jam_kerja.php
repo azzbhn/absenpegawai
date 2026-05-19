@@ -100,6 +100,7 @@ foreach ($shifts as $key => $label) {
             </div>
         </form>
     </main>
+    <?php include 'footer.php'; ?>
     <script> feather.replace(); </script>
 </body>
 </html>

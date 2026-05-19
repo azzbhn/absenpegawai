@@ -269,6 +269,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         feather.replace();

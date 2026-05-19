@@ -84,6 +84,8 @@ $user = $_SESSION['user'];
             </div>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         // Initialize Feather Icons

@@ -334,6 +334,8 @@ if (isset($jenis_cuti_map[$active_tab])) {
             <?php endforeach; ?>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
         feather.replace();

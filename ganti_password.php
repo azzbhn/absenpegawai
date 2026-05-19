@@ -196,6 +196,8 @@ ob_start(function($buffer) {
             </form>
         </div>
     </main>
+    
+    <?php include 'footer.php'; ?>
 
     <script>
       const menuToggle = document.getElementById('menu-toggle');

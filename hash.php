@@ -128,4 +128,7 @@ if ($action === 'hash' && $plain !== '') {
     </div>
   </div>
 </body>
+
+<?php include 'footer.php'; ?>
+
 </html>
