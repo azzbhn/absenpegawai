@@ -8,9 +8,9 @@ require_once __DIR__ . '/menu_config.php';
 date_default_timezone_set('Asia/Jakarta');
 
 $host = 'localhost';
-$dbname = 'fgqqlzxt_absen_kec_db';
-$username = 'fgqqlzxt_absen_kec_root';
-$password = 'aLk.25474!';
+$dbname = '';
+$username = '';
+$password = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
